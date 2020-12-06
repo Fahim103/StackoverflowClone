@@ -14,8 +14,8 @@ namespace StackOverflow.Core.Mappings
         {
             Id(e => e.Id).GeneratedBy.Identity();
             Map(e => e.IsUpvoted);
-            References<ApplicationUser>(x => x.UserId).Column("UserId");
-            References<Post>(x => x.PostId).Column("PostId");
+            References(x => x.ApplicationUser);
+            References(x => x.Post);
         }
     }
 }

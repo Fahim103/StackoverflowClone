@@ -43,7 +43,7 @@ namespace StackOverflow.Web.Models
                 Title = Title,
                 Content = Content,
                 CreatedAt = DateTime.UtcNow,
-                UserId = user.Id.ToString(),
+                ApplicationUser = user
             };
 
             _postService.Create(post);

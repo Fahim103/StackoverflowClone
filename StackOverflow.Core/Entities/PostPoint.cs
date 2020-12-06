@@ -11,8 +11,6 @@ namespace StackOverflow.Core.Entities
         public virtual int Id { get; set; }
         public virtual bool IsUpvoted { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }
-        public virtual string UserId { get; set; }
-        public virtual int PostId { get; set; }
         public virtual Post Post { get; set; }
     }
 }

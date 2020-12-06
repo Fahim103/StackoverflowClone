@@ -16,7 +16,7 @@ namespace StackOverflow.Core.Mappings
             Map(e => e.Title);
             Map(e => e.Content);
             Map(e => e.CreatedAt);
-            References<ApplicationUser>(x => x.UserId).Column("UserId");
+            References(x => x.ApplicationUser);
             HasMany(e => e.PostPoints).Cascade.AllDeleteOrphan();
         }
     }
