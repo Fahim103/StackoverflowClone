@@ -14,5 +14,6 @@ namespace StackOverflow.Core.Entities
         public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual string UserId { get; set; }
         public virtual int Points { get; set; }
+        public virtual bool IsAccepted { get; set; }
     }
 }

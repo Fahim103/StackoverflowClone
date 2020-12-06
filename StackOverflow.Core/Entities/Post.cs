@@ -12,6 +12,7 @@ namespace StackOverflow.Core.Entities
         public virtual string Title { get; set; }
         public virtual string Content { get; set; }
         public virtual DateTime CreatedAt { get; set; }
+        public virtual int Points { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual string UserId { get; set; }
     }
