@@ -16,6 +16,7 @@ namespace StackOverflow.Core.Mappings
             Map(e => e.Content);
             Map(e => e.CreatedAt);
             Map(e => e.Points);
+            Map(e => e.IsAccepted);
             References<ApplicationUser>(x => x.UserId).Column("UserId");
         }
     }

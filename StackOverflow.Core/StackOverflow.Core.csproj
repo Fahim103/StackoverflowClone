@@ -99,8 +99,6 @@
     <Compile Include="Entities\ApplicationUser.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\Post.cs" />
-    <Compile Include="Mappings\ApplicationUserMappings.cs" />
-    <Compile Include="Mappings\AutomappingConfiguration.cs" />
     <Compile Include="Mappings\CommentMappings.cs" />
     <Compile Include="Mappings\PostMappings.cs" />
     <Compile Include="NHibernateDbContext.cs" />
