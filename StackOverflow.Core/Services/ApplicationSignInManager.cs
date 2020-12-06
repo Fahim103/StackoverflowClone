@@ -5,7 +5,7 @@ using StackOverflow.Core.Entities;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace StackOverflow.Core.Service
+namespace StackOverflow.Core.Services
 {
     // Configure the application sign-in manager which is used in this application.
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StackOverflow.Core.Service
+namespace StackOverflow.Core.Services
 {
     public class SmsService : IIdentityMessageService
     {

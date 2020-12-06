@@ -8,16 +8,14 @@ using System.Threading.Tasks;
 
 namespace StackOverflow.Core.Mappings
 {
-    public class CommentMappings : ClassMap<Comment>
+    class PostPointMappings : ClassMap<PostPoint>
     {
-        public CommentMappings()
+        public PostPointMappings()
         {
             Id(e => e.Id).GeneratedBy.Identity();
-            Map(e => e.Content);
-            Map(e => e.CreatedAt);
-            Map(e => e.IsAccepted);
+            Map(e => e.IsUpvoted);
             References<ApplicationUser>(x => x.UserId).Column("UserId");
-            HasMany(e => e.CommentPoints).Cascade.AllDeleteOrphan();
+            References<Post>(x => x.PostId).Column("PostId");
         }
     }
 }

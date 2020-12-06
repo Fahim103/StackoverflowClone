@@ -1,6 +1,7 @@
 using Autofac;
 using Autofac.Integration.Mvc;
 using Serilog;
+using StackOverflow.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace StackOverflow.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            SetupAutofac();
+            //SetupAutofac();
         }
 
         private void SetupAutofac()
@@ -32,7 +33,7 @@ namespace StackOverflow.Web
             // the class in Global.asax.)
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
 
-            //builder.RegisterModule(new ModuleNameWillBeHere());
+            builder.RegisterModule(new CoreModule());
 
             builder.Register<ILogger>((componentContext, parameters) =>
             {

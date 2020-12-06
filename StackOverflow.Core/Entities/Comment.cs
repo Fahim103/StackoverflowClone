@@ -13,7 +13,7 @@ namespace StackOverflow.Core.Entities
         public virtual DateTime CreatedAt { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual string UserId { get; set; }
-        public virtual int Points { get; set; }
         public virtual bool IsAccepted { get; set; }
+        public virtual ICollection<CommentPoint> CommentPoints { get; set; }
     }
 }

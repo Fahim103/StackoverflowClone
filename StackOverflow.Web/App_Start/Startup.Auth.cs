@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Web.Mvc;
+using Autofac;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -6,13 +8,14 @@ using Microsoft.Owin.Security.Cookies;
 using Owin;
 using StackOverflow.Core;
 using StackOverflow.Core.Entities;
-using StackOverflow.Core.Service;
+using StackOverflow.Core.Services;
 
 namespace StackOverflow.Web
 {
     public partial class Startup
     {
         // For more information on configuring authentication, please visit https://go.microsoft.com/fwlink/?LinkId=301864
+
         public void ConfigureAuth(IAppBuilder app)
         {
             // Configure the db context, user manager and signin manager to use a single instance per request

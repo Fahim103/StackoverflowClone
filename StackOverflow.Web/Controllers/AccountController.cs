@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using StackOverflow.Core.Entities;
-using StackOverflow.Core.Service;
+using StackOverflow.Core.Services;
 using StackOverflow.Web.Models;
 
 namespace StackOverflow.Web.Controllers

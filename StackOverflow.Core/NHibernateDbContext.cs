@@ -32,6 +32,8 @@ namespace StackOverflow.Core
                 .Mappings(m => m.FluentMappings.Conventions.AddFromAssemblyOf<TableNameConvention>())
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<PostMappings>())
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<CommentMappings>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<PostPointMappings>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<CommentPointMappings>())
                 .ExposeConfiguration(cfg =>
                 {
                     cfg.AddDeserializedMapping(MappingHelper.GetIdentityMappings(myEntities), null);
