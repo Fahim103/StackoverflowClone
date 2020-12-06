@@ -12,7 +12,10 @@ namespace StackOverflow.Web.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            var model = new PostModel();
+            model.LoadModelData();
+
+            return View(model.Posts);
         }
 
         [Authorize]

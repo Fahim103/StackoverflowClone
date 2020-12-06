@@ -29,7 +29,7 @@ namespace StackOverflow.Core.Services
 
         public IList<Post> GetAll()
         {
-            throw new System.NotImplementedException();
+            return _unitOfWork.PostRepository.Get().ToList();
         }
 
         public Post GetById(int id)
