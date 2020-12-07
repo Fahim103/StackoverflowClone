@@ -1,5 +1,6 @@
 ﻿using StackOverflow.Core.Entities;
 using StackOverflow.Core.Repositories;
+using StackOverflow.Core.UnitOfWorks;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,16 +8,18 @@ namespace StackOverflow.Core.Services
 {
     public class CommentService : ICommentService
     {
-        private IRepository<Comment> _commentRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CommentService(IRepository<Comment> commentRepository)
+        public CommentService(IUnitOfWork unitOfWork)
         {
-            _commentRepository = commentRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public void Create(Comment comment)
         {
-            throw new System.NotImplementedException();
+            _unitOfWork.BeginTransaction();
+            _unitOfWork.CommentRepository.Create(comment);
+            _unitOfWork.Commit();
         }
 
         public void Delete(int id)

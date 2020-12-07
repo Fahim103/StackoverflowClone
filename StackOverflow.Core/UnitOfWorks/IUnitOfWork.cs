@@ -8,5 +8,8 @@ namespace StackOverflow.Core.UnitOfWorks
         void Commit();
         void Rollback();
         IPostRepository PostRepository { get; set; }
+        ICommentRepository CommentRepository { get; set; }
+        IPostPointRepository PostPointRepository { get; set; }
+        ICommentPointRepository CommentPointRepository { get; set; }
     }
 }

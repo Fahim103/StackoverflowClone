@@ -16,6 +16,9 @@ namespace StackOverflow.Core.UnitOfWorks
         private ITransaction _transaction;
         public ISession Session { get; set; }
         public IPostRepository PostRepository { get; set; }
+        public ICommentRepository CommentRepository { get; set; }
+        public IPostPointRepository PostPointRepository { get; set; }
+        public ICommentPointRepository CommentPointRepository { get; set; }
 
         static UnitOfWork()
         {
@@ -40,10 +43,14 @@ namespace StackOverflow.Core.UnitOfWorks
             _sessionFactory = _config.BuildSessionFactory();
         }
 
-        public UnitOfWork(IPostRepository postRepository)
+        public UnitOfWork(IPostRepository postRepository, ICommentRepository commentRepository,
+            IPostPointRepository postPointRepository, ICommentPointRepository commentPointRepository)
         {
             Session = _sessionFactory.OpenSession();
             PostRepository = postRepository;
+            CommentRepository = commentRepository;
+            PostPointRepository = postPointRepository;
+            CommentPointRepository = commentPointRepository;
         }
 
         public void BeginTransaction()
