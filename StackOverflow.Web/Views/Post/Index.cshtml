@@ -29,10 +29,14 @@
                     @Html.ActionLink(@item.Title, "Details", new {  id=item.Id })
                 </h5>
                 <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil.
+                    @if(item.Content.Length > 100)
+                    {
+                        @item.Content.Substring(0, 100)
+                    }
+                    else
+                    {
+                        @item.Content
+                    }
                 </p>
             </div>
             <div class="col-md-12 text-right">

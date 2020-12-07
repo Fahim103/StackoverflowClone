@@ -14,5 +14,7 @@ namespace StackOverflow.Core.Entities
         public virtual DateTime CreatedAt { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual ICollection<PostPoint> PostPoints { get; set; }
+        public virtual ICollection<Comment> Comments{ get; set; }
+
     }
 }

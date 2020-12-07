@@ -12,10 +12,10 @@ namespace StackOverflow.Core.Mappings
     {
         public CommentPointMappings()
         {
-            Id(e => e.Id).GeneratedBy.Identity();
-            Map(e => e.IsUpvoted);
-            References(x => x.ApplicationUser);
-            References(x => x.Comment);
+            Id(c => c.Id).GeneratedBy.Identity();
+            Map(c => c.IsUpvoted);
+            References(c => c.ApplicationUser);
+            References(c => c.Comment);
         }
     }
 }

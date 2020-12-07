@@ -21,7 +21,6 @@ namespace StackOverflow.Web.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            var model = new CreatePostModel();
             return View();
         }
 
@@ -41,7 +40,12 @@ namespace StackOverflow.Web.Controllers
         [HttpGet]
         public ActionResult Details(int id)
         {
-            var model = new PostModel();
+            if (id == 0)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var model = new PostDetailsModel();
             model.GetModelById(id);
 
             return View(model);

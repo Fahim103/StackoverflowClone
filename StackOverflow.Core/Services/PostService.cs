@@ -1,5 +1,4 @@
 ﻿using StackOverflow.Core.Entities;
-using StackOverflow.Core.Repositories;
 using StackOverflow.Core.UnitOfWorks;
 using System.Collections.Generic;
 using System.Linq;

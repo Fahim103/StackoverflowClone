@@ -28,38 +28,13 @@ namespace StackOverflow.Web.Models
         {
             _postService = postService;
         }
-
-        public void GetModelById(int id)
-        {
-            var post = _postService.GetById(id);
-            Id = post.Id;
-            Title = post.Title;
-            Content = post.Content;
-            CreatedAt = post.CreatedAt.ToLocalTime();
-        }
-
+        
         public void LoadModelData()
         {
             var posts = _postService.GetAll();
             Posts = new List<PostModel>();
             foreach(var post in posts)
             {
-                Posts.Add(new PostModel()
-                {
-                    Id = post.Id,
-                    Title = post.Title,
-                    Content = post.Content,
-                    CreatedAt = post.CreatedAt.ToLocalTime()
-                });
-
-                Posts.Add(new PostModel()
-                {
-                    Id = post.Id,
-                    Title = post.Title,
-                    Content = post.Content,
-                    CreatedAt = post.CreatedAt.ToLocalTime()
-                });
-
                 Posts.Add(new PostModel()
                 {
                     Id = post.Id,

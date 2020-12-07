@@ -14,5 +14,6 @@ namespace StackOverflow.Core.Entities
         public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual bool IsAccepted { get; set; }
         public virtual ICollection<CommentPoint> CommentPoints { get; set; }
+        public virtual Post Post { get; set; }
     }
 }

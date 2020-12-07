@@ -12,10 +12,10 @@ namespace StackOverflow.Core.Mappings
     {
         public PostPointMappings()
         {
-            Id(e => e.Id).GeneratedBy.Identity();
-            Map(e => e.IsUpvoted);
-            References(x => x.ApplicationUser);
-            References(x => x.Post);
+            Id(p => p.Id).GeneratedBy.Identity();
+            Map(p => p.IsUpvoted);
+            References(p => p.ApplicationUser);
+            References(p => p.Post);
         }
     }
 }

@@ -55,6 +55,10 @@ namespace StackOverflow.Core.UnitOfWorks
 
         public void BeginTransaction()
         {
+            if (!Session.IsOpen)
+            {
+                Session = _sessionFactory.OpenSession();
+            }
             _transaction = Session.BeginTransaction();
         }
 

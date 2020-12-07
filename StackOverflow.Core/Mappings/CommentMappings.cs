@@ -12,12 +12,13 @@ namespace StackOverflow.Core.Mappings
     {
         public CommentMappings()
         {
-            Id(e => e.Id).GeneratedBy.Identity();
-            Map(e => e.Content);
-            Map(e => e.CreatedAt);
-            Map(e => e.IsAccepted);
-            References(x => x.ApplicationUser);
-            HasMany(e => e.CommentPoints).Cascade.AllDeleteOrphan();
+            Id(c => c.Id).GeneratedBy.Identity();
+            Map(c => c.Content).Length(2000);
+            Map(c => c.CreatedAt);
+            Map(c => c.IsAccepted);
+            References(c => c.ApplicationUser);
+            HasMany(c => c.CommentPoints).Cascade.AllDeleteOrphan();
+            References(c => c.Post);
         }
     }
 }

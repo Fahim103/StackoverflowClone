@@ -1,4 +1,4 @@
-﻿@model StackOverflow.Web.Models.PostModel
+﻿@model StackOverflow.Web.Models.PostDetailsModel
 
 @section styles {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
@@ -37,10 +37,68 @@
         <div class="col-md-10">
             <p>
                 @Model.Content
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil.
             </p>
         </div>
     </div>
+
+    @foreach (var item in Model.CommentDetails)
+    {
+        <div class="row">
+            <div class="col-md-1 text-center">
+                <div>
+                    <button style="border: none; background-color: white;">
+                        <span>
+                            <i class="fa fa-lg fa-angle-up" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                    <br>
+                    <span>0</span>
+                    <br>
+                    <button style="border: none; background-color: white;">
+                        <span>
+                            <i class="fa fa-lg fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+                <div>
+                    @if(item.IsAccepted)
+                    {
+                        @:<span><i class="fa fa-lg fa-check" aria-hidden="true" style="color:green"></i></span>
+                    }
+                </div>
+            </div>
+            <div class="col-md-10">
+                <p>
+                    @item.Content
+                </p>
+            </div>
+            <div class="col-md-12 text-right">
+                <div class="px-5">
+                    <small>
+                        <span>Replied at @item.CreatedAt.ToLocalTime()</span>
+                        <br>
+                        <span>By @item.AnsweredBy</span>
+                    </small>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (Request.IsAuthenticated)
+    {
+        <div class="row mt-3">
+            <div class="offset-1 col-md-10">
+                @using (Html.BeginForm("AddComment", "Comment", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <label for="commentAnswer"><strong>Your Answer</strong></label>
+                        <textarea class="form-control" id="commentAnswer" rows="5" style="width:100%" name="Content"></textarea>
+                    </div>
+                    <input type="hidden" name="PostId" value=@Model.Id />
+                    <button type="submit" class="btn btn-primary">Post Your Answer</button>
+                }
+            </div>
+        </div>
+    }
 </div>
