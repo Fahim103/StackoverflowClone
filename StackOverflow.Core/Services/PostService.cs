@@ -34,7 +34,7 @@ namespace StackOverflow.Core.Services
 
         public Post GetById(int id)
         {
-            throw new System.NotImplementedException();
+            return _unitOfWork.PostRepository.Get(id);
         }
 
         public void Update(Post post)

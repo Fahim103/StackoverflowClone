@@ -11,9 +11,10 @@ namespace StackOverflow.Web.Models
     {
         private readonly IPostService _postService;
 
-        public virtual string Title { get; set; }
-        public virtual string Content { get; set; }
-        public virtual DateTime CreatedAt { get; set; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         public IList<PostModel> Posts { get; private set; }
 
@@ -28,6 +29,15 @@ namespace StackOverflow.Web.Models
             _postService = postService;
         }
 
+        public void GetModelById(int id)
+        {
+            var post = _postService.GetById(id);
+            Id = post.Id;
+            Title = post.Title;
+            Content = post.Content;
+            CreatedAt = post.CreatedAt.ToLocalTime();
+        }
+
         public void LoadModelData()
         {
             var posts = _postService.GetAll();
@@ -36,6 +46,23 @@ namespace StackOverflow.Web.Models
             {
                 Posts.Add(new PostModel()
                 {
+                    Id = post.Id,
+                    Title = post.Title,
+                    Content = post.Content,
+                    CreatedAt = post.CreatedAt.ToLocalTime()
+                });
+
+                Posts.Add(new PostModel()
+                {
+                    Id = post.Id,
+                    Title = post.Title,
+                    Content = post.Content,
+                    CreatedAt = post.CreatedAt.ToLocalTime()
+                });
+
+                Posts.Add(new PostModel()
+                {
+                    Id = post.Id,
                     Title = post.Title,
                     Content = post.Content,
                     CreatedAt = post.CreatedAt.ToLocalTime()

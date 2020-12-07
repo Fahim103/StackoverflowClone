@@ -1,0 +1,46 @@
+﻿@model StackOverflow.Web.Models.PostModel
+
+@section styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+}
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="mt-2">
+    <div class="row">
+        <div class="col-md-10">
+            <h4>@Model.Title</h4>
+            <small>@Model.CreatedAt</small>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-1 text-center">
+            <div>
+                <button style="border: none; background-color: white;">
+                    <span>
+                        <i class="fa fa-lg fa-angle-up" aria-hidden="true"></i>
+                    </span>
+                </button>
+                <br>
+                <span>0</span>
+                <br>
+                <button style="border: none; background-color: white;">
+                    <span>
+                        <i class="fa fa-lg fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <p>
+                @Model.Content
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil. Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, nihil.
+            </p>
+        </div>
+    </div>
+</div>

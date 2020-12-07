@@ -37,5 +37,14 @@ namespace StackOverflow.Web.Controllers
 
             return View(createPostModel);
         }
+
+        [HttpGet]
+        public ActionResult Details(int id)
+        {
+            var model = new PostModel();
+            model.GetModelById(id);
+
+            return View(model);
+        }
     }
 }
