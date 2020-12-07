@@ -4,6 +4,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
 }
 
+@section scripts {
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script type="text/javascript">
+        function UpvotePostSuccess(data) {
+            //alert('Success');
+            $('#Points').text(data);
+        }
+        function UpvotePostFailure(data) {
+            alert('Failed to upvote. ' + data);
+        }
+
+        function DownvotePostSuccess(data) {
+            $('#Points').text(data);
+        }
+
+        function DownvotePostFailure(data) {
+            alert('Failed to downvote. ' + data);
+        }
+    </script>
+}
+
 @{
     ViewBag.Title = "Details";
 }
@@ -19,19 +40,25 @@
     <div class="row">
         <div class="col-md-1 text-center">
             <div>
-                <button style="border: none; background-color: white;">
-                    <span>
-                        <i class="fa fa-lg fa-angle-up" aria-hidden="true"></i>
-                    </span>
-                </button>
-                <br>
-                <span>0</span>
-                <br>
-                <button style="border: none; background-color: white;">
-                    <span>
-                        <i class="fa fa-lg fa-angle-down" aria-hidden="true"></i>
-                    </span>
-                </button>
+                @using (Ajax.BeginForm("Upvote", "Post", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "Points", OnSuccess = "UpvotePostSuccess", OnFailure = "UpvotePostFailure" }))
+                {
+                    <input type="hidden" value=@Model.Id name="id" />
+                    <button type="submit" style="border: none; background-color: white;">
+                        <span>
+                            <i class="fa fa-lg fa-angle-up" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                }
+                <span id="Points" name="Points">@Model.Points</span>
+                @using (Ajax.BeginForm("Downvote", "Post", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "Points", OnSuccess = "DownvotePostSuccess", OnFailure = "DownvotePostFailure" }))
+                {
+                    <input type="hidden" value="@Model.Id" name="id" />
+                    <button type="submit" style="border: none; background-color: white;">
+                        <span>
+                            <i class="fa fa-lg fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                }
             </div>
         </div>
         <div class="col-md-10">
@@ -61,7 +88,7 @@
                     </button>
                 </div>
                 <div>
-                    @if(item.IsAccepted)
+                    @if (item.IsAccepted)
                     {
                         @:<span><i class="fa fa-lg fa-check" aria-hidden="true" style="color:green"></i></span>
                     }

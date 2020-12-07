@@ -50,5 +50,19 @@ namespace StackOverflow.Web.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public ActionResult Upvote(int id)
+        {
+            // TODO call server and update votes.
+            return Json(10, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult Downvote(int id)
+        {
+            // TODO call server and downvote
+            return Json(0, JsonRequestBehavior.AllowGet);
+        }
     }
 }
