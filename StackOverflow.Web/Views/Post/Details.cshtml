@@ -22,6 +22,27 @@
         function DownvotePostFailure(data) {
             alert('Failed to downvote. ' + data);
         }
+
+        function UpvoteCommentSuccess(data) {
+            let id = data.id.toString();
+            let point = data.point;
+            $('#' + id).text(point);
+        }
+
+        function UpvoteCommentFailure(data) {
+            console.log("UpvoteCommentFailure")
+        }
+
+        function DownvoteCommentSuccess(data) {
+            let id = data.id.toString();
+            let point = data.point;
+            $('#' + id).text(point);
+        }
+
+        function DownvoteCommentFailure(data) {
+            console.log("DownvoteCommentFailure")
+        }
+
     </script>
 }
 
@@ -68,24 +89,37 @@
         </div>
     </div>
 
+    @if(Model.CommentDetails.Count > 0)
+    {
+        <hr />
+        <h5>Answers</h5>
+    }
+
     @foreach (var item in Model.CommentDetails)
     {
+        <hr />
         <div class="row">
             <div class="col-md-1 text-center">
                 <div>
-                    <button style="border: none; background-color: white;">
-                        <span>
-                            <i class="fa fa-lg fa-angle-up" aria-hidden="true"></i>
-                        </span>
-                    </button>
-                    <br>
-                    <span>0</span>
-                    <br>
-                    <button style="border: none; background-color: white;">
-                        <span>
-                            <i class="fa fa-lg fa-angle-down" aria-hidden="true"></i>
-                        </span>
-                    </button>
+                    @using (Ajax.BeginForm("Upvote", "Comment", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = item.Id.ToString(), OnSuccess = "UpvoteCommentSuccess", OnFailure = "UpvoteCommentFailure" }))
+                    {
+                        <input type="hidden" value=@item.Id name="id" />
+                        <button style="border: none; background-color: white;">
+                            <span>
+                                <i class="fa fa-lg fa-angle-up" aria-hidden="true"></i>
+                            </span>
+                        </button>
+                    }
+                    <span id="@item.Id" name="CommentPoints">0</span>
+                    @using (Ajax.BeginForm("Downvote", "Comment", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = item.Id.ToString(), OnSuccess = "DownvoteCommentSuccess", OnFailure = "DownvoteCommentFailure" }))
+                    {
+                        <input type="hidden" value=@item.Id name="id" />
+                        <button type="submit" style="border: none; background-color: white;">
+                            <span>
+                                <i class="fa fa-lg fa-angle-down" aria-hidden="true"></i>
+                            </span>
+                        </button>
+                    }
                 </div>
                 <div>
                     @if (item.IsAccepted)

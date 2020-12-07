@@ -27,5 +27,42 @@ namespace StackOverflow.Web.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public ActionResult Upvote(int id)
+        {
+            // TODO call server and downvote
+            try
+            {
+                dynamic returnData = new
+                {
+                    id,
+                    point = 10
+                };
+                return Json(returnData, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                dynamic returnData = new
+                {
+                    id,
+                    error = "Failed to Upvote",
+                };
+                return Json(returnData, JsonRequestBehavior.AllowGet);
+            }
+            
+        }
+
+        [HttpPost]
+        public ActionResult Downvote(int id)
+        {
+            // TODO call server and downvote
+            dynamic returnData = new
+            {
+                id,
+                point = 0
+            };
+            return Json(returnData, JsonRequestBehavior.AllowGet);
+        }
     }
 }
