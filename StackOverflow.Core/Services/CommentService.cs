@@ -8,18 +8,24 @@ namespace StackOverflow.Core.Services
 {
     public class CommentService : ICommentService
     {
-        private readonly IUnitOfWork _unitOfWork;
+        //private readonly IUnitOfWork _unitOfWork;
+        private readonly ICommentRepository _commentRepository;
 
-        public CommentService(IUnitOfWork unitOfWork)
+        //public CommentService(IUnitOfWork unitOfWork)
+        //{
+        //    _unitOfWork = unitOfWork;
+        //}
+
+        public CommentService(ICommentRepository commentRepository)
         {
-            _unitOfWork = unitOfWork;
+            _commentRepository = commentRepository;
         }
-
         public void Create(Comment comment)
         {
-            _unitOfWork.BeginTransaction();
-            _unitOfWork.CommentRepository.Create(comment);
-            _unitOfWork.Commit();
+            _commentRepository.Create(comment);
+            //_unitOfWork.BeginTransaction();
+            //_unitOfWork.CommentRepository.Create(comment);
+            //_unitOfWork.Commit();
         }
 
         public void Delete(int id)
@@ -29,12 +35,12 @@ namespace StackOverflow.Core.Services
 
         public IList<Comment> GetAll()
         {
-            throw new System.NotImplementedException();
+            return _commentRepository.Get();
         }
 
         public Comment GetById(int id)
         {
-            throw new System.NotImplementedException();
+            return _commentRepository.Get(id);
         }
 
         public void Update(Comment comment)

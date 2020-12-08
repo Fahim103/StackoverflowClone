@@ -9,54 +9,125 @@ namespace StackOverflow.Core.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        //private UnitOfWork _unitOfWork;
-        //public Repository(IUnitOfWork unitOfWork)
-        //{
-        //    _unitOfWork = (UnitOfWork)unitOfWork;
-        //}
-
-        public Repository(ISession session)
+        public virtual void Create(T entity)
         {
-            Session = session;
+            using (ISession _session = NHibernateDbContext.GetSession())
+            {
+                using (ITransaction _transaction = _session.BeginTransaction())
+                {
+                    try
+                    {
+                        _session.Save(entity);
+                        _transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        if (!_transaction.WasCommitted)
+                        {
+                            _transaction.Rollback();
+                        }
+
+                        throw new Exception("Failed to insert : " + ex.Message);
+                    }
+                }
+            }
         }
 
-        protected ISession Session { get; private set; }
-
-        public IQueryable<T> Get()
+        public virtual void Update(T entity)
         {
-            return Session.Query<T>();
+            using (ISession _session = NHibernateDbContext.GetSession())
+            {
+                using (ITransaction _transaction = _session.BeginTransaction())
+                {
+                    try
+                    {
+                        _session.Update(entity);
+                        _transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        if (!_transaction.WasCommitted)
+                        {
+                            _transaction.Rollback();
+                        }
+
+                        throw new Exception("Faild to update : " + ex.Message);
+                    }
+                }
+
+            }
         }
 
-        public IList<T> Get(Expression<Func<T, bool>> predicate = null)
+        public virtual void Delete(int id)
         {
-            return Session.Query<T>().Where(predicate).ToList();
+            Delete(Get(id));
         }
 
-        public T Get(int id)
+        public virtual void Delete(T entity)
         {
-            return Session.Get<T>(id);
+            using (ISession _session = NHibernateDbContext.GetSession())
+            {
+                using (ITransaction _transaction = _session.BeginTransaction())
+                {
+                    try
+                    {
+                        _session.Delete(entity);
+                        _transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        if (!_transaction.WasCommitted)
+                        {
+                            _transaction.Rollback();
+                        }
+
+                        throw new Exception("Faild to delete : " + ex.Message);
+                    }
+                }
+            }
         }
 
-        public void Create(T entity)
+        public virtual T Get(int id)
         {
-            Session.Save(entity);
+            using (ISession _session = NHibernateDbContext.GetSession())
+            {
+                return _session.Get<T>(id);
+            }
         }
 
-        public void Update(T entity)
+        public virtual IList<T> Get()
         {
-            Session.Update(entity);
+            using (ISession _session = NHibernateDbContext.GetSession())
+            {
+
+                return _session.Query<T>().ToList();
+            }
         }
 
-        public void Delete(int id)
+        public virtual int GetCount(Expression<Func<T, bool>> predicate = null)
         {
-            //Session.Delete(Session.Load<T>(id));
-            var entity = Get(id);
-            Delete(entity);
+            using (ISession _session = NHibernateDbContext.GetSession())
+            {
+
+                var count = _session.Query<T>()
+                    .Where(predicate)
+                    .Count();
+
+                return count;
+            }
         }
 
-        public void Delete(T entity)
+        public virtual IList<T> Get(Expression<Func<T, bool>> predicate = null)
         {
-            Session.Delete(entity);
+            using (ISession _session = NHibernateDbContext.GetSession())
+            {
+
+                var list = _session.Query<T>()
+                    .Where(predicate)
+                    .ToList();
+
+                return list;
+            }
         }
     }
 }

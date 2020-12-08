@@ -52,17 +52,29 @@ namespace StackOverflow.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upvote(int id)
+        public async Task<ActionResult> Upvote(int id)
         {
-            // TODO call server and update votes.
-            return Json(10, JsonRequestBehavior.AllowGet);
+            var model = new PostVoteModel();
+            var data = await model.Upvote(id, User.Identity.Name);
+            dynamic returnData = new
+            {
+                id,
+                point = data.Item2
+            };
+            return Json(returnData, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult Downvote(int id)
+        public async Task<ActionResult> Downvote(int id)
         {
-            // TODO call server and downvote
-            return Json(0, JsonRequestBehavior.AllowGet);
+            var model = new PostVoteModel();
+            var data = await model.Downvote(id, User.Identity.Name);
+            dynamic returnData = new
+            {
+                id,
+                point = data.Item2
+            };
+            return Json(returnData, JsonRequestBehavior.AllowGet);
         }
     }
 }

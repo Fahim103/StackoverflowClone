@@ -231,11 +231,13 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddCommentModel.cs" />
     <Compile Include="Models\CommentDetailsModel.cs" />
+    <Compile Include="Models\CommentVoteModel.cs" />
     <Compile Include="Models\CreatePostModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PostDetailsModel.cs" />
     <Compile Include="Models\PostModel.cs" />
+    <Compile Include="Models\PostVoteModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

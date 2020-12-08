@@ -11,9 +11,9 @@ namespace StackOverflow.Core.Repositories
 {
     public class CommentRepository : Repository<Comment>, ICommentRepository
     {
-        public CommentRepository(ISession session) : base(session)
-        {
+        //public CommentRepository(ISession session) : base(session)
+        //{
 
-        }
+        //}
     }
 }

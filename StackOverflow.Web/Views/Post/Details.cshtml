@@ -8,15 +8,18 @@
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script type="text/javascript">
         function UpvotePostSuccess(data) {
-            //alert('Success');
-            $('#Points').text(data);
+            let id = data.id.toString();
+            let point = data.point;
+            $('#Points').text(point);
         }
         function UpvotePostFailure(data) {
             alert('Failed to upvote. ' + data);
         }
 
         function DownvotePostSuccess(data) {
-            $('#Points').text(data);
+            let id = data.id.toString();
+            let point = data.point;
+            $('#Points').text(point);
         }
 
         function DownvotePostFailure(data) {

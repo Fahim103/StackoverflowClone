@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +12,8 @@ namespace StackOverflow.Core.Services
     {
         void Update(PostPoint postPoint);
         void Create(PostPoint postPoint);
-        int GetCount(int postId);
+        PostPoint GetByUserId(string userId);
+        int GetCount(Expression<Func<PostPoint, bool>> predicate);
+        (long upvote, long downvote, long overall) GetVotes(int postId);
     }
 }

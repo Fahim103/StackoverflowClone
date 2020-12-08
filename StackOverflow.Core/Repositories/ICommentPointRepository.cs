@@ -9,5 +9,7 @@ namespace StackOverflow.Core.Repositories
 {
     public interface ICommentPointRepository : IRepository<CommentPoint>
     {
+        CommentPoint GetByUserId(string userId);
+        (long upvote, long downvote, long overall) GetVotes(int commentId);
     }
 }

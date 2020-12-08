@@ -9,5 +9,7 @@ namespace StackOverflow.Core.Repositories
 {
     public interface IPostPointRepository : IRepository<PostPoint>
     {
+        (long upvote, long downvote, long overall) GetVotes(int postId);
+        PostPoint GetByUserId(string userId);
     }
 }

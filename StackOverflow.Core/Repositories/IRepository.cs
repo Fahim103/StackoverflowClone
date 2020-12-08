@@ -9,10 +9,12 @@ namespace StackOverflow.Core.Repositories
 {
     public interface IRepository<T> where T : class
     {
-        IQueryable<T> Get();
+        IList<T> Get();
         IList<T> Get(Expression<Func<T, bool>> predicate = null);
+        int GetCount(Expression<Func<T, bool>> predicate = null);
         T Get(int id);
         void Create(T entity);
+        void Update(T entity);
         void Delete(T entity);
         void Delete(int id);
     }

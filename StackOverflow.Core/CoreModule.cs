@@ -24,8 +24,7 @@ namespace StackOverflow.Core
             builder.RegisterType<PostPointRepository>().As<IPostPointRepository>().InstancePerLifetimeScope();
             builder.RegisterType<CommentPointService>().As<ICommentPointService>().InstancePerLifetimeScope();
             builder.RegisterType<PostPointService>().As<IPostPointService>().InstancePerLifetimeScope();
-
-            builder.Register(s => NHibernateDbContext.GetSession()).As<ISession>();
+            //builder.Register(s => NHibernateDbContext.GetSession()).As<ISession>().InstancePerDependency();
 
             base.Load(builder);
         }

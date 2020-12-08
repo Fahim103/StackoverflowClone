@@ -1,4 +1,5 @@
 ﻿using StackOverflow.Core.Entities;
+using StackOverflow.Core.Repositories;
 using StackOverflow.Core.UnitOfWorks;
 using System;
 using System.Collections.Generic;
@@ -10,26 +11,37 @@ namespace StackOverflow.Core.Services
 {
     public class CommentPointService : ICommentPointService
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ICommentPointRepository _commentPointRepository;
 
-        public CommentPointService(IUnitOfWork unitOfWork)
+        public CommentPointService(ICommentPointRepository commentPointRepository)
         {
-            _unitOfWork = unitOfWork;
+            _commentPointRepository = commentPointRepository;
         }
 
         public void Create(CommentPoint commentPoint)
         {
-            throw new NotImplementedException();
+            _commentPointRepository.Create(commentPoint);
+        }
+
+        public CommentPoint GetByUserId(string userId)
+        {
+            return _commentPointRepository.GetByUserId(userId);
         }
 
         public int GetCount(int commentId)
         {
-            throw new NotImplementedException();
+            var count = _commentPointRepository.GetCount(x => x.Comment.Id == commentId);
+            return count;
+        }
+
+        public (long upvote, long downvote, long overall) GetVotes(int commentId)
+        {
+            return _commentPointRepository.GetVotes(commentId);
         }
 
         public void Update(CommentPoint commentPoint)
         {
-            throw new NotImplementedException();
+            _commentPointRepository.Update(commentPoint);
         }
     }
 }
