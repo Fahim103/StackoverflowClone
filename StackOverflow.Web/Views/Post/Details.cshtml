@@ -136,7 +136,23 @@
                     @item.Content
                 </p>
             </div>
-            <div class="col-md-12 text-right">
+            @if (!Model.HasAcceptedAnswer)
+            {
+                <div class="offset-1 col-md-4 answer-accept">
+                    @using (Html.BeginForm("AcceptAnswer", "Post", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken();
+                        <input type="hidden" name="CommentId" value=@item.Id />
+                        <input type="hidden" name="PostId" value=@Model.Id />
+                        <div>
+                            <button type="submit" class="btn btn-sm btn-success">
+                                Accept
+                            </button>
+                        </div>
+                    }
+                </div>
+            }
+            <div class="@(Model.HasAcceptedAnswer ? "offset-6": string.Empty) col-md-6 text-right">
                 <div class="px-5">
                     <small>
                         <span>Replied at @item.CreatedAt.ToLocalTime()</span>

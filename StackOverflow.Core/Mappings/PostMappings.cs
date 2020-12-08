@@ -16,6 +16,7 @@ namespace StackOverflow.Core.Mappings
             Map(p => p.Title).Length(512);
             Map(p => p.Content).Length(2000);
             Map(p => p.CreatedAt);
+            Map(p => p.HasAcceptedAnswer);
             References(p => p.ApplicationUser);
             HasMany(p => p.PostPoints).Cascade.AllDeleteOrphan();
             HasMany(p => p.Comments).Cascade.AllDeleteOrphan();

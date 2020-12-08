@@ -54,7 +54,6 @@ namespace StackOverflow.Core.Repositories
                         throw new Exception("Faild to update : " + ex.Message);
                     }
                 }
-
             }
         }
 

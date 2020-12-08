@@ -53,7 +53,7 @@ namespace StackOverflow.Core.Services
 
         public void Update(Post post)
         {
-            throw new System.NotImplementedException();
+            _postRepository.Update(post);
         }
     }
 }

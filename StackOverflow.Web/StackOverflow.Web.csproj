@@ -235,6 +235,7 @@
     <Compile Include="Models\CreatePostModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PostAnswerAcceptModel.cs" />
     <Compile Include="Models\PostDetailsModel.cs" />
     <Compile Include="Models\PostModel.cs" />
     <Compile Include="Models\PostVoteModel.cs" />

@@ -45,7 +45,7 @@ namespace StackOverflow.Core.Services
 
         public void Update(Comment comment)
         {
-            throw new System.NotImplementedException();
+            _commentRepository.Update(comment);
         }
     }
 }

@@ -76,5 +76,13 @@ namespace StackOverflow.Web.Controllers
             };
             return Json(returnData, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AcceptAnswer(PostAnswerAcceptModel model)
+        {
+            model.AcceptAnswer();
+            return RedirectToAction("Details", "Post", new { id = model.PostId });
+        }
     }
 }
