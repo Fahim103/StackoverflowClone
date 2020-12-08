@@ -175,7 +175,7 @@
                     @item.Content
                 </p>
             </div>
-            @if (!Model.HasAcceptedAnswer && User.Identity.Name.Equals("fahimali103@gmail.com"))
+            @if (!Model.HasAcceptedAnswer && User.Identity.Name.Equals(Model.AskedBy))
             {
                 <div class="offset-1 col-md-4 answer-accept">
                     @using (Html.BeginForm("AcceptAnswer", "Post", FormMethod.Post))

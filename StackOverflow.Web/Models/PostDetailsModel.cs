@@ -21,6 +21,7 @@ namespace StackOverflow.Web.Models
         public DateTime CreatedAt { get; set; }
         public long Points { get; set; }
         public bool HasAcceptedAnswer { get; set; }
+        public string AskedBy { get; set; }
         public IList<CommentDetailsModel> CommentDetails { get; set; }
 
         public PostDetailsModel()
@@ -46,6 +47,7 @@ namespace StackOverflow.Web.Models
             Content = post.Content;
             CreatedAt = post.CreatedAt.ToLocalTime();
             HasAcceptedAnswer = post.HasAcceptedAnswer;
+            AskedBy = "fahimali103@gmail.com";
             Points = _postPointService.GetVotes(post.Id).overall;
             CommentDetails = new List<CommentDetailsModel>();
 

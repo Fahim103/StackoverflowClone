@@ -6,6 +6,7 @@ using NHibernate.Tool.hbm2ddl;
 using StackOverflow.Core.Convention;
 using StackOverflow.Core.Entities;
 using StackOverflow.Core.Mappings;
+using System.Configuration;
 
 namespace StackOverflow.Core
 {
@@ -24,11 +25,10 @@ namespace StackOverflow.Core
                 typeof(ApplicationUser)
             };
 
+            var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ToString();
+
             FluentConfiguration _config = Fluently.Configure()
-                .Database(MsSqlConfiguration.MsSql2012.ConnectionString(x => x.Server(@".\SQLEXPRESS")
-                .Username("demo")
-                .Password("123456")
-                .Database("StackOverflowClone")))
+                .Database(MsSqlConfiguration.MsSql2012.ConnectionString(connectionString))
                 .Mappings(m => m.FluentMappings.Conventions.AddFromAssemblyOf<TableNameConvention>())
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<PostMappings>())
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<CommentMappings>())
