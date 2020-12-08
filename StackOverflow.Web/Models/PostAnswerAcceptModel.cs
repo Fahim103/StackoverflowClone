@@ -2,6 +2,7 @@
 using StackOverflow.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -12,7 +13,9 @@ namespace StackOverflow.Web.Models
         private readonly IPostService _postService;
         private readonly ICommentService _commentService;
 
+        [Required]
         public int CommentId { get; set; }
+        [Required]
         public int PostId { get; set; }
 
         public PostAnswerAcceptModel()
@@ -24,12 +27,6 @@ namespace StackOverflow.Web.Models
         public void AcceptAnswer()
         {
             _postService.AcceptAnswer(PostId, CommentId);
-            //var post = _postService.Get(PostId);
-            //post.HasAcceptedAnswer = true;
-            //_postService.Update(post);
-            //var comment = _commentService.Get(CommentId);
-            //comment.IsAccepted = true;
-            //_commentService.Update(comment);
         }
     }
 }

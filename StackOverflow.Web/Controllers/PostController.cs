@@ -110,7 +110,11 @@ namespace StackOverflow.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AcceptAnswer(PostAnswerAcceptModel model)
         {
-            model.AcceptAnswer();
+            if(ModelState.IsValid)
+            {
+                model.AcceptAnswer();
+            }
+            
             return RedirectToAction("Details", "Post", new { id = model.PostId });
         }
     }
