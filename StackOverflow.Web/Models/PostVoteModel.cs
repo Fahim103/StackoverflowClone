@@ -30,80 +30,22 @@ namespace StackOverflow.Web.Models
             _userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
         }
 
-        public async Task<(string, long)> Upvote(int postId, string username)
+        public async Task<(string message, long points)> Upvote(int postId, string username)
         {
             var user = await _userManager.FindByNameAsync(username);
-            var post = _postService.GetById(postId);
-            var postPoint = _postPointService.GetByPostAndUserId(post.Id, user.Id);
-            if (postPoint != null)
-            {
-                if (!postPoint.IsUpvoted)
-                {
-                    try
-                    {
-                        postPoint.IsUpvoted = true;
-                        _postPointService.Update(postPoint);
-                        return ("Success", _postPointService.GetVotes(postId).overall);
-                    }
-                    catch (Exception ex)
-                    {
 
-                        throw;
-                    }
-                    
-                }
-                return ("Error", _postPointService.GetVotes(postId).overall);
-            }
-            else
-            {
-                postPoint = new PostPoint
-                {
-                    ApplicationUser = user,
-                    IsUpvoted = true,
-                    Post = post
-                };
+            (string message, long points) = _postService.UpvotePost(user, postId);
 
-                _postPointService.Create(postPoint);
-                return ("Success", _postPointService.GetVotes(postId).overall);
-            }
+            return (message, points);
         }
 
         public async Task<(string, long)> Downvote(int postId, string username)
         {
             var user = await _userManager.FindByNameAsync(username);
-            var post = _postService.GetById(postId);
-            var postPoint = _postPointService.GetByPostAndUserId(post.Id, user.Id);
-            if (postPoint != null)
-            {
-                if (postPoint.IsUpvoted)
-                {
-                    try
-                    {
-                        postPoint.IsUpvoted = false;
-                        _postPointService.Update(postPoint);
-                        return ("Success", _postPointService.GetVotes(postId).overall);
-                    }
-                    catch (Exception ex)
-                    {
 
-                        throw;
-                    }
+            (string message, long points) = _postService.DownvotePost(user, postId);
 
-                }
-                return ("Error", _postPointService.GetVotes(postId).overall);
-            }
-            else
-            {
-                postPoint = new PostPoint
-                {
-                    ApplicationUser = user,
-                    IsUpvoted = false,
-                    Post = post
-                };
-
-                _postPointService.Create(postPoint);
-                return ("Success", _postPointService.GetVotes(postId).overall);
-            }
+            return (message, points);
         }
     }
 }

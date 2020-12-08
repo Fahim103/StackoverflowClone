@@ -32,11 +32,11 @@ namespace StackOverflow.Web.Controllers
         public async Task<ActionResult> Upvote(int id)
         {
             var model = new CommentVoteModel();
-            var data = await model.Upvote(id, User.Identity.Name);
+            var (message, points) = await model.Upvote(id, User.Identity.Name);
             dynamic returnData = new
             {
                 id,
-                point = data.Item2
+                point = points
             };
             return Json(returnData, JsonRequestBehavior.AllowGet);
         }
@@ -45,11 +45,11 @@ namespace StackOverflow.Web.Controllers
         public async Task<ActionResult> Downvote(int id)
         {
             var model = new CommentVoteModel();
-            var data = await model.Downvote(id, User.Identity.Name);
+            var (message, points) = await model.Downvote(id, User.Identity.Name);
             dynamic returnData = new
             {
                 id,
-                point = data.Item2
+                point = points
             };
             return Json(returnData, JsonRequestBehavior.AllowGet);
         }

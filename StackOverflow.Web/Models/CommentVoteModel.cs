@@ -30,80 +30,22 @@ namespace StackOverflow.Web.Models
             _userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
         }
 
-        public async Task<(string, long)> Upvote(int commentId, string username)
+        public async Task<(string message, long points)> Upvote(int commentId, string username)
         {
             var user = await _userManager.FindByNameAsync(username);
-            var comment = _commentService.GetById(commentId);
-            var commentPoint = _commentPointService.GetByCommentAndUserId(comment.Id, user.Id);
-            if (commentPoint != null)
-            {
-                if (!commentPoint.IsUpvoted)
-                {
-                    try
-                    {
-                        commentPoint.IsUpvoted = true;
-                        _commentPointService.Update(commentPoint);
-                        return ("Success", _commentPointService.GetVotes(commentId).overall);
-                    }
-                    catch (Exception ex)
-                    {
 
-                        throw;
-                    }
+            (string message, long points) = _commentService.UpvoteComment(user, commentId);
 
-                }
-                return ("Error", _commentPointService.GetVotes(commentId).overall);
-            }
-            else
-            {
-                commentPoint = new CommentPoint
-                {
-                    ApplicationUser = user,
-                    IsUpvoted = true,
-                    Comment = comment
-                };
-
-                _commentPointService.Create(commentPoint);
-                return ("Success", _commentPointService.GetVotes(commentId).overall);
-            }
+            return (message, points);
         }
 
         public async Task<(string, long)> Downvote(int commentId, string username)
         {
             var user = await _userManager.FindByNameAsync(username);
-            var comment = _commentService.GetById(commentId);
-            var commentPoint = _commentPointService.GetByCommentAndUserId(comment.Id, user.Id);
-            if (commentPoint != null)
-            {
-                if (commentPoint.IsUpvoted)
-                {
-                    try
-                    {
-                        commentPoint.IsUpvoted = false;
-                        _commentPointService.Update(commentPoint);
-                        return ("Success", _commentPointService.GetVotes(commentId).overall);
-                    }
-                    catch (Exception ex)
-                    {
 
-                        throw;
-                    }
+            (string message, long points) = _commentService.DownvoteComment(user, commentId);
 
-                }
-                return ("Error", _commentPointService.GetVotes(commentId).overall);
-            }
-            else
-            {
-                commentPoint = new CommentPoint
-                {
-                    ApplicationUser = user,
-                    IsUpvoted = false,
-                    Comment = comment
-                };
-
-                _commentPointService.Create(commentPoint);
-                return ("Success", _commentPointService.GetVotes(commentId).overall);
-            }
+            return (message, points);
         }
     }
 }

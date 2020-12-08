@@ -36,6 +36,7 @@ namespace StackOverflow.Core
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<CommentPointMappings>())
                 .ExposeConfiguration(cfg =>
                 {
+                    cfg.SessionFactory().DefaultFlushMode(FlushMode.Commit);
                     cfg.AddDeserializedMapping(MappingHelper.GetIdentityMappings(myEntities), null);
                     new SchemaUpdate(cfg).Execute(false, true);
                 });

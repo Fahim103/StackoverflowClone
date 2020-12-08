@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NHibernate;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -9,13 +10,13 @@ namespace StackOverflow.Core.Repositories
 {
     public interface IRepository<T> where T : class
     {
-        IList<T> Get();
-        IList<T> Get(Expression<Func<T, bool>> predicate = null);
-        int GetCount(Expression<Func<T, bool>> predicate = null);
-        T Get(int id);
-        void Create(T entity);
-        void Update(T entity);
-        void Delete(T entity);
-        void Delete(int id);
+        IList<T> Get(ISession session);
+        IList<T> Get(ISession session, Expression<Func<T, bool>> predicate = null);
+        int GetCount(ISession session, Expression<Func<T, bool>> predicate = null);
+        T Get(ISession session, int id);
+        void Create(ISession session, T entity);
+        void Update(ISession session, T entity);
+        void Delete(ISession session, T entity);
+        void Delete(ISession session, int id);
     }
 }

@@ -23,12 +23,13 @@ namespace StackOverflow.Web.Models
 
         public void AcceptAnswer()
         {
-            var post = _postService.GetById(PostId);
-            post.HasAcceptedAnswer = true;
-            _postService.Update(post);
-            var comment = _commentService.GetById(CommentId);
-            comment.IsAccepted = true;
-            _commentService.Update(comment);
+            _postService.AcceptAnswer(PostId, CommentId);
+            //var post = _postService.Get(PostId);
+            //post.HasAcceptedAnswer = true;
+            //_postService.Update(post);
+            //var comment = _commentService.Get(CommentId);
+            //comment.IsAccepted = true;
+            //_commentService.Update(comment);
         }
     }
 }

@@ -8,15 +8,15 @@ namespace StackOverflow.Core.Seed
         public virtual void GenerateUserRoles()
         {
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(NHibernateDbContext.GetSession()));
-            if (!roleManager.RoleExists(MembershipConstants.ADMIN_ROLE))
+            if (!roleManager.RoleExists(StringConstants.ADMIN_ROLE))
             {
-                var role = new IdentityRole(MembershipConstants.ADMIN_ROLE);
+                var role = new IdentityRole(StringConstants.ADMIN_ROLE);
                 roleManager.Create(role);
             }
 
-            if (!roleManager.RoleExists(MembershipConstants.USER_ROLE))
+            if (!roleManager.RoleExists(StringConstants.USER_ROLE))
             {
-                var role = new IdentityRole(MembershipConstants.USER_ROLE);
+                var role = new IdentityRole(StringConstants.USER_ROLE);
                 roleManager.Create(role);
             }
         }
