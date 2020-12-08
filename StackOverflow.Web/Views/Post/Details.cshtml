@@ -9,9 +9,12 @@
     <script type="text/javascript">
 
         function UpvotePostSuccess(data) {
-            let id = data.id.toString();
-            let point = data.point;
-            $('#Points').text(point);
+            let id = data.Id.toString();
+            let points = data.Points;
+            let status = data.Status;
+            if (status != "NOT_AUTHENTICATED") {
+                $('#Points').text(points);
+            }
         }
         function UpvotePostFailure(data) {
             @if(!User.Identity.IsAuthenticated)
@@ -25,9 +28,14 @@
         }
 
         function DownvotePostSuccess(data) {
-            let id = data.id.toString();
-            let point = data.point;
-            $('#Points').text(point);
+            let id = data.Id.toString();
+            let points = data.Points;
+            let status = data.Status;
+            console.log(status);
+            if (status != "NOT_AUTHENTICATED") {
+                $('#Points').text(points);
+            }
+            $('#Points').text(points);
         }
 
         function DownvotePostFailure(data) {
@@ -42,9 +50,12 @@
         }
 
         function UpvoteCommentSuccess(data) {
-            let id = data.id.toString();
-            let point = data.point;
-            $('#' + id).text(point);
+            let id = data.Id.toString();
+            let points = data.Points;
+            let status = data.Status;
+            if (status != "NOT_AUTHENTICATED") {
+                $('#' + id).text(points);
+            }
         }
 
         function UpvoteCommentFailure(data) {
@@ -59,9 +70,12 @@
         }
 
         function DownvoteCommentSuccess(data) {
-            let id = data.id.toString();
-            let point = data.point;
-            $('#' + id).text(point);
+            let id = data.Id.toString();
+            let points = data.Points;
+            let status = data.Status;
+            if (status != "NOT_AUTHENTICATED") {
+                $('#' + id).text(points);
+            }
         }
 
         function DownvoteCommentFailure(data) {

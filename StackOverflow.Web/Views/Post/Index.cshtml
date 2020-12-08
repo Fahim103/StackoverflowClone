@@ -2,11 +2,13 @@
 
 @{
     ViewBag.Title = "Index";
+    var count = Model.Count();
 }
 
 <div>
     @foreach (var item in Model)
     {
+        count--;
         <div class="row">
             <div class="col-md-1 text-center">
                 <div>
@@ -49,6 +51,10 @@
                 </div>
             </div>
         </div>
+        if(count != 0)
+        {
+            <hr />
+        }
     }
 </div>
 

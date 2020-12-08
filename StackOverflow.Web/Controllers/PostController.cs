@@ -51,28 +51,58 @@ namespace StackOverflow.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Upvote(int id)
         {
+            VotesAjaxResponseModel responseModel;
+
+            if (!User.Identity.IsAuthenticated)
+            {
+                responseModel = new VotesAjaxResponseModel()
+                {
+                    Id = id,
+                };
+
+                return Json(responseModel, JsonRequestBehavior.AllowGet);
+            }
+
             var model = new PostVoteModel();
             var (message, points) = await model.Upvote(id, User.Identity.Name);
-            dynamic returnData = new
+
+            responseModel = new VotesAjaxResponseModel()
             {
-                id,
-                point = points
+                Id = id,
+                Points = points,
+                Status = message
             };
-            return Json(returnData, JsonRequestBehavior.AllowGet);
+
+            return Json(responseModel, JsonRequestBehavior.AllowGet);
         }
 
         [Authorize]
         [HttpPost]
         public async Task<ActionResult> Downvote(int id)
         {
+            VotesAjaxResponseModel responseModel;
+
+            if (!User.Identity.IsAuthenticated)
+            {
+                responseModel = new VotesAjaxResponseModel()
+                {
+                    Id = id,
+                };
+
+                return Json(responseModel, JsonRequestBehavior.AllowGet);
+            }
+
             var model = new PostVoteModel();
             var (message, points) = await model.Downvote(id, User.Identity.Name);
-            dynamic returnData = new
+
+            responseModel = new VotesAjaxResponseModel()
             {
-                id,
-                point = points
+                Id = id,
+                Points = points,
+                Status = message
             };
-            return Json(returnData, JsonRequestBehavior.AllowGet);
+
+            return Json(responseModel, JsonRequestBehavior.AllowGet);
         }
 
         [Authorize]

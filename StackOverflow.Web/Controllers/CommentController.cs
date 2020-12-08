@@ -31,27 +31,58 @@ namespace StackOverflow.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Upvote(int id)
         {
-            var model = new CommentVoteModel();
-            var (message, points) = await model.Upvote(id, User.Identity.Name);
-            dynamic returnData = new
+
+            VotesAjaxResponseModel responseModel;
+
+            if(!User.Identity.IsAuthenticated)
             {
-                id,
-                point = points
+                responseModel = new VotesAjaxResponseModel()
+                {
+                    Id = id,
+                };
+
+                return Json(responseModel, JsonRequestBehavior.AllowGet);
+            }
+
+            var model = new CommentVoteModel();
+
+            var (message, points) = await model.Upvote(id, User.Identity.Name);
+
+            responseModel = new VotesAjaxResponseModel()
+            {
+                Id = id,
+                Points = points,
+                Status = message
             };
-            return Json(returnData, JsonRequestBehavior.AllowGet);
+            return Json(responseModel, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public async Task<ActionResult> Downvote(int id)
         {
+            VotesAjaxResponseModel responseModel;
+
+            if (!User.Identity.IsAuthenticated)
+            {
+                responseModel = new VotesAjaxResponseModel()
+                {
+                    Id = id,
+                };
+
+                return Json(responseModel, JsonRequestBehavior.AllowGet);
+            }
+
             var model = new CommentVoteModel();
             var (message, points) = await model.Downvote(id, User.Identity.Name);
-            dynamic returnData = new
+
+            responseModel = new VotesAjaxResponseModel()
             {
-                id,
-                point = points
+                Id = id,
+                Points = points,
+                Status = message
             };
-            return Json(returnData, JsonRequestBehavior.AllowGet);
+
+            return Json(responseModel, JsonRequestBehavior.AllowGet);
         }
     }
 }
