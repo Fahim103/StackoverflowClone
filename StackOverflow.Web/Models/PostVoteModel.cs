@@ -72,16 +72,38 @@ namespace StackOverflow.Web.Models
         {
             var user = await _userManager.FindByNameAsync(username);
             var post = _postService.GetById(postId);
-            var postPoint = new PostPoint
+            var postPoint = _postPointService.GetByUserId(user.Id);
+            if (postPoint != null)
             {
-                ApplicationUser = user,
-                IsUpvoted = false,
-                Post = post
-            };
+                if (postPoint.IsUpvoted)
+                {
+                    try
+                    {
+                        postPoint.IsUpvoted = false;
+                        _postPointService.Update(postPoint);
+                        return ("Success", _postPointService.GetVotes(postId).overall);
+                    }
+                    catch (Exception ex)
+                    {
 
-            _postPointService.Create(postPoint);
+                        throw;
+                    }
 
-            return ("Success", _postPointService.GetVotes(postId).overall);
+                }
+                return ("Error", _postPointService.GetVotes(postId).overall);
+            }
+            else
+            {
+                postPoint = new PostPoint
+                {
+                    ApplicationUser = user,
+                    IsUpvoted = false,
+                    Post = post
+                };
+
+                _postPointService.Create(postPoint);
+                return ("Success", _postPointService.GetVotes(postId).overall);
+            }
         }
     }
 }

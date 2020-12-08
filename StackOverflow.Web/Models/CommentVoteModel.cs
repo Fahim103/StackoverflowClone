@@ -72,16 +72,38 @@ namespace StackOverflow.Web.Models
         {
             var user = await _userManager.FindByNameAsync(username);
             var comment = _commentService.GetById(commentId);
-            var commentPoint = new CommentPoint
+            var commentPoint = _commentPointService.GetByUserId(user.Id);
+            if (commentPoint != null)
             {
-                ApplicationUser = user,
-                IsUpvoted = false,
-                Comment = comment
-            };
+                if (commentPoint.IsUpvoted)
+                {
+                    try
+                    {
+                        commentPoint.IsUpvoted = false;
+                        _commentPointService.Update(commentPoint);
+                        return ("Success", _commentPointService.GetVotes(commentId).overall);
+                    }
+                    catch (Exception ex)
+                    {
 
-            _commentPointService.Create(commentPoint);
+                        throw;
+                    }
 
-            return ("Success", _commentPointService.GetVotes(commentId).overall);
+                }
+                return ("Error", _commentPointService.GetVotes(commentId).overall);
+            }
+            else
+            {
+                commentPoint = new CommentPoint
+                {
+                    ApplicationUser = user,
+                    IsUpvoted = false,
+                    Comment = comment
+                };
+
+                _commentPointService.Create(commentPoint);
+                return ("Success", _commentPointService.GetVotes(commentId).overall);
+            }
         }
     }
 }
