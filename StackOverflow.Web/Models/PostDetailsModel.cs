@@ -40,8 +40,6 @@ namespace StackOverflow.Web.Models
 
         public void GetModelById(int id)
         {
-            _postService = new PostService();
-
             var post = _postService.GetById(id);
             Id = post.Id;
             Title = post.Title;

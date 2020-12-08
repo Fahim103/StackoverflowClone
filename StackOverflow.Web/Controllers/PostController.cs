@@ -47,6 +47,7 @@ namespace StackOverflow.Web.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> Upvote(int id)
         {
@@ -60,6 +61,7 @@ namespace StackOverflow.Web.Controllers
             return Json(returnData, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> Downvote(int id)
         {
@@ -73,6 +75,7 @@ namespace StackOverflow.Web.Controllers
             return Json(returnData, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AcceptAnswer(PostAnswerAcceptModel model)
