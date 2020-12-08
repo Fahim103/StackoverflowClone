@@ -27,7 +27,7 @@ namespace StackOverflow.Core.Seed
                 if (result.Succeeded)
                 {
                     admin = _manager.FindByEmail("admin@demo.com");
-                    _manager.AddToRole(admin.Id, "ADMIN");
+                    _manager.AddToRole(admin.Id, MembershipConstants.ADMIN_ROLE);
                 }
             }
         }

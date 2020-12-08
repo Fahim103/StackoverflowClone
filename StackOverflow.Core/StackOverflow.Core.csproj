@@ -170,6 +170,7 @@
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Seed\ApplicationUserRoleSeed.cs" />
     <Compile Include="Seed\ApplicationUserSeed.cs" />
+    <Compile Include="MembershipConstants.cs" />
     <Compile Include="Services\ApplicationSignInManager.cs" />
     <Compile Include="Services\ApplicationUserManager.cs" />
     <Compile Include="Services\CommentPointService.cs" />
