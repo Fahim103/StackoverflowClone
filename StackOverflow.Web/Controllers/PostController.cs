@@ -1,4 +1,5 @@
-﻿using StackOverflow.Web.Models;
+﻿using StackOverflow.Core.Exceptions;
+using StackOverflow.Web.Models;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -41,10 +42,17 @@ namespace StackOverflow.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            var model = new PostDetailsModel();
-            model.GetModelById(id);
+            try
+            {
+                var model = new PostDetailsModel();
+                model.GetModelById(id);
 
-            return View(model);
+                return View(model);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         [Authorize]

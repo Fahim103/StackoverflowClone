@@ -154,6 +154,7 @@
     <Compile Include="Entities\CommentPoint.cs" />
     <Compile Include="Entities\Post.cs" />
     <Compile Include="Entities\PostPoint.cs" />
+    <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Mappings\CommentMappings.cs" />
     <Compile Include="Mappings\CommentPointMappings.cs" />
     <Compile Include="Mappings\PostMappings.cs" />

@@ -1,6 +1,7 @@
 ﻿using NHibernate;
 using StackOverflow.Core.DTO;
 using StackOverflow.Core.Entities;
+using StackOverflow.Core.Exceptions;
 using StackOverflow.Core.Repositories;
 using StackOverflow.Core.UnitOfWorks;
 using System;
@@ -72,6 +73,10 @@ namespace StackOverflow.Core.Services
         {
             _session.Clear();
             var post = _unitOfWork.PostRepository.Get(_session, id);
+            if (post == null)
+            {
+                throw new EntityNotFoundException("No post found", nameof(Post));
+            }
             var postModelDTO = new PostModelDTO()
             {
                 Id = post.Id,
