@@ -10,23 +10,19 @@ namespace StackOverflow.Core.Repositories
 {
     public class CommentPointRepository : Repository<CommentPoint>, ICommentPointRepository
     {
-        public CommentPoint GetByUserId(string userId)
+        public CommentPoint GetByUserId(ISession session, string userId)
         {
-            return Get(x => x.ApplicationUser.Id == userId).FirstOrDefault();
+            return Get(session, x => x.ApplicationUser.Id == userId).FirstOrDefault();
         }
 
-        public (long upvote, long downvote, long overall) GetVotes(int commentId)
+        public (long upvote, long downvote, long overall) GetVotes(ISession session, int commentId)
         {
-            using (ISession _session = NHibernateDbContext.GetSession())
-            {
+            var query = session.Query<CommentPoint>().Where(x => x.Comment.Id == commentId);
+            var upvote = query.Where(x => x.IsUpvoted == true).Count();
+            var downvote = query.Where(x => x.IsUpvoted == false).Count();
+            var overall = upvote - downvote;
 
-                var query = _session.Query<CommentPoint>().Where(x => x.Comment.Id == commentId);
-                var upvote = query.Where(x => x.IsUpvoted == true).Count();
-                var downvote = query.Where(x => x.IsUpvoted == false).Count();
-                var overall = upvote - downvote;
-
-                return (upvote, downvote, overall);
-            }
+            return (upvote, downvote, overall);
         }
     }
 }

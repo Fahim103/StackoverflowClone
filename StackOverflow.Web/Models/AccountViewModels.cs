@@ -48,12 +48,12 @@ namespace StackOverflow.Web.Models
 
     public class LoginViewModel
     {
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Email is required")]
         [Display(Name = "Email")]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
+        [Required (ErrorMessage = "Password is required")]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
@@ -69,7 +69,7 @@ namespace StackOverflow.Web.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Password is required")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -94,6 +94,7 @@ namespace StackOverflow.Web.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]

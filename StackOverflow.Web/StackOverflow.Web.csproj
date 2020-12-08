@@ -230,6 +230,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddCommentModel.cs" />
+    <Compile Include="Models\VotesAjaxResponseModel.cs" />
     <Compile Include="Models\CommentDetailsModel.cs" />
     <Compile Include="Models\CommentVoteModel.cs" />
     <Compile Include="Models\CreatePostModel.cs" />

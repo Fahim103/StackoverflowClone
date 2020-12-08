@@ -7,43 +7,86 @@
 @section scripts {
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script type="text/javascript">
+
         function UpvotePostSuccess(data) {
-            let id = data.id.toString();
-            let point = data.point;
-            $('#Points').text(point);
+            let id = data.Id.toString();
+            let points = data.Points;
+            let status = data.Status;
+            if (status == "SUCCESS") {
+                $('#Points').text(points);
+            }
         }
         function UpvotePostFailure(data) {
-            alert('Failed to upvote. ' + data);
+            @if(!User.Identity.IsAuthenticated)
+            {
+                @:alert('Please login to vote');
+            }
+            else
+            {
+                @:alert('Something went wrong');
+            }
         }
 
         function DownvotePostSuccess(data) {
-            let id = data.id.toString();
-            let point = data.point;
-            $('#Points').text(point);
+            let id = data.Id.toString();
+            let points = data.Points;
+            let status = data.Status;
+            console.log(status);
+            if (status == "SUCCESS") {
+                $('#Points').text(points);
+            }
+            $('#Points').text(points);
         }
 
         function DownvotePostFailure(data) {
-            alert('Failed to downvote. ' + data);
+            @if(!User.Identity.IsAuthenticated)
+            {
+                @:alert('Please login to vote');
+            }
+            else
+            {
+                @:alert('Something went wrong');
+            }
         }
 
         function UpvoteCommentSuccess(data) {
-            let id = data.id.toString();
-            let point = data.point;
-            $('#' + id).text(point);
+            let id = data.Id.toString();
+            let points = data.Points;
+            let status = data.Status;
+            if (status == "SUCCESS") {
+                $('#' + id).text(points);
+            }
         }
 
         function UpvoteCommentFailure(data) {
-            console.log("UpvoteCommentFailure")
+            @if(!User.Identity.IsAuthenticated)
+            {
+                @:alert('Please login to vote');
+            }
+            else
+            {
+                @:alert('Something went wrong');
+            }
         }
 
         function DownvoteCommentSuccess(data) {
-            let id = data.id.toString();
-            let point = data.point;
-            $('#' + id).text(point);
+            let id = data.Id.toString();
+            let points = data.Points;
+            let status = data.Status;
+            if (status == "SUCCESS") {
+                $('#' + id).text(points);
+            }
         }
 
         function DownvoteCommentFailure(data) {
-            console.log("DownvoteCommentFailure")
+            @if(!User.Identity.IsAuthenticated)
+            {
+                @:alert('Please login to vote');
+            }
+            else
+            {
+                @:alert('Something went wrong');
+            }
         }
 
     </script>
@@ -52,6 +95,17 @@
 @{
     ViewBag.Title = "Details";
 }
+
+<div>
+    <div class="row">
+        <div class="col-md-12">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">@Html.ActionLink("Posts", "Index", "Post", routeValues: null, htmlAttributes: new { })</li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+            </ol>
+        </div>
+    </div>
+</div>
 
 <div class="mt-2">
     <div class="row">
@@ -73,7 +127,7 @@
                         </span>
                     </button>
                 }
-                <span id="Points" name="Points">@Model.Points</span>
+                <span id="Points" name="TotalVotes">@Model.TotalVotes</span>
                 @using (Ajax.BeginForm("Downvote", "Post", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "Points", OnSuccess = "DownvotePostSuccess", OnFailure = "DownvotePostFailure" }))
                 {
                     <input type="hidden" value="@Model.Id" name="id" />
@@ -113,7 +167,7 @@
                             </span>
                         </button>
                     }
-                    <span id="@item.Id" name="CommentPoints">0</span>
+                    <span id="@item.Id" name="CommentPoints">@item.CommentPoints</span>
                     @using (Ajax.BeginForm("Downvote", "Comment", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = item.Id.ToString(), OnSuccess = "DownvoteCommentSuccess", OnFailure = "DownvoteCommentFailure" }))
                     {
                         <input type="hidden" value=@item.Id name="id" />
@@ -136,7 +190,7 @@
                     @item.Content
                 </p>
             </div>
-            @if (!Model.HasAcceptedAnswer)
+            @if (!Model.HasAcceptedAnswer && User.Identity.Name.Equals(Model.AskedBy))
             {
                 <div class="offset-1 col-md-4 answer-accept">
                     @using (Html.BeginForm("AcceptAnswer", "Post", FormMethod.Post))
@@ -151,16 +205,28 @@
                         </div>
                     }
                 </div>
-            }
-            <div class="@(Model.HasAcceptedAnswer ? "offset-6": string.Empty) col-md-6 text-right">
-                <div class="px-5">
-                    <small>
-                        <span>Replied at @item.CreatedAt.ToLocalTime()</span>
-                        <br>
-                        <span>By @item.AnsweredBy</span>
-                    </small>
+                <div class="col-md-6 text-right">
+                    <div class="px-5">
+                        <small>
+                            <span>Replied at @item.CreatedAt.ToLocalTime()</span>
+                            <br>
+                            <span>By @item.AnsweredBy</span>
+                        </small>
+                    </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <div class="col-md-12 text-right">
+                    <div class="px-5">
+                        <small>
+                            <span>Replied at @item.CreatedAt.ToLocalTime()</span>
+                            <br>
+                            <span>By @item.AnsweredBy</span>
+                        </small>
+                    </div>
+                </div>
+            }
         </div>
     }
 

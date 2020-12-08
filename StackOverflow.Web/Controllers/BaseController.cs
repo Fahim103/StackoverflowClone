@@ -18,16 +18,16 @@ namespace StackOverflow.Web.Controllers
             UnitOfWork = Startup.AutofacContainer.Resolve<IUnitOfWork>();
         }
 
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            if (!filterContext.IsChildAction)
-                UnitOfWork.BeginTransaction();
-        }
+        //protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        //{
+        //    if (!filterContext.IsChildAction)
+        //        UnitOfWork.BeginTransaction();
+        //}
 
-        protected override void OnResultExecuted(ResultExecutedContext filterContext)
-        {
-            if (!filterContext.IsChildAction)
-                UnitOfWork.Commit();
-        }
+        //protected override void OnResultExecuted(ResultExecutedContext filterContext)
+        //{
+        //    if (!filterContext.IsChildAction)
+        //        UnitOfWork.Commit();
+        //}
     }
 }

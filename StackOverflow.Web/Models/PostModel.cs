@@ -15,6 +15,9 @@ namespace StackOverflow.Web.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
+        public long TotalVotes { get; set; }
+        public long TotalAnswers { get; set; }
+
 
         public IList<PostModel> Posts { get; private set; }
 
@@ -40,7 +43,9 @@ namespace StackOverflow.Web.Models
                     Id = post.Id,
                     Title = post.Title,
                     Content = post.Content,
-                    CreatedAt = post.CreatedAt.ToLocalTime()
+                    CreatedAt = post.CreatedAt.ToLocalTime(),
+                    TotalVotes = post.TotalVotes,
+                    TotalAnswers = post.TotalAnswers
                 });
             }
         }

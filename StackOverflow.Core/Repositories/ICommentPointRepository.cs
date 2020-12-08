@@ -1,15 +1,11 @@
-﻿using StackOverflow.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NHibernate;
+using StackOverflow.Core.Entities;
 
 namespace StackOverflow.Core.Repositories
 {
     public interface ICommentPointRepository : IRepository<CommentPoint>
     {
-        CommentPoint GetByUserId(string userId);
-        (long upvote, long downvote, long overall) GetVotes(int commentId);
+        CommentPoint GetByUserId(ISession session, string userId);
+        (long upvote, long downvote, long overall) GetVotes(ISession session, int commentId);
     }
 }

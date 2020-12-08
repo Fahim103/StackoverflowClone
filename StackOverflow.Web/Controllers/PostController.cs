@@ -1,4 +1,5 @@
-﻿using StackOverflow.Web.Models;
+﻿using StackOverflow.Core.Exceptions;
+using StackOverflow.Web.Models;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -41,43 +42,87 @@ namespace StackOverflow.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            var model = new PostDetailsModel();
-            model.GetModelById(id);
+            try
+            {
+                var model = new PostDetailsModel();
+                model.GetModelById(id);
 
-            return View(model);
+                return View(model);
+            }
+            catch (EntityNotFoundException ex)
+            {
+                return RedirectToAction("Index");
+            }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> Upvote(int id)
         {
-            var model = new PostVoteModel();
-            var data = await model.Upvote(id, User.Identity.Name);
-            dynamic returnData = new
+            VotesAjaxResponseModel responseModel;
+
+            if (!User.Identity.IsAuthenticated)
             {
-                id,
-                point = data.Item2
+                responseModel = new VotesAjaxResponseModel()
+                {
+                    Id = id,
+                };
+
+                return Json(responseModel, JsonRequestBehavior.AllowGet);
+            }
+
+            var model = new PostVoteModel();
+            var (message, points) = await model.Upvote(id, User.Identity.Name);
+
+            responseModel = new VotesAjaxResponseModel()
+            {
+                Id = id,
+                Points = points,
+                Status = message
             };
-            return Json(returnData, JsonRequestBehavior.AllowGet);
+
+            return Json(responseModel, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> Downvote(int id)
         {
-            var model = new PostVoteModel();
-            var data = await model.Downvote(id, User.Identity.Name);
-            dynamic returnData = new
+            VotesAjaxResponseModel responseModel;
+
+            if (!User.Identity.IsAuthenticated)
             {
-                id,
-                point = data.Item2
+                responseModel = new VotesAjaxResponseModel()
+                {
+                    Id = id,
+                };
+
+                return Json(responseModel, JsonRequestBehavior.AllowGet);
+            }
+
+            var model = new PostVoteModel();
+            var (message, points) = await model.Downvote(id, User.Identity.Name);
+
+            responseModel = new VotesAjaxResponseModel()
+            {
+                Id = id,
+                Points = points,
+                Status = message
             };
-            return Json(returnData, JsonRequestBehavior.AllowGet);
+
+            return Json(responseModel, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AcceptAnswer(PostAnswerAcceptModel model)
         {
-            model.AcceptAnswer();
+            if(ModelState.IsValid)
+            {
+                model.AcceptAnswer();
+            }
+            
             return RedirectToAction("Details", "Post", new { id = model.PostId });
         }
     }

@@ -31,27 +31,58 @@ namespace StackOverflow.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Upvote(int id)
         {
-            var model = new CommentVoteModel();
-            var data = await model.Upvote(id, User.Identity.Name);
-            dynamic returnData = new
+
+            VotesAjaxResponseModel responseModel;
+
+            if(!User.Identity.IsAuthenticated)
             {
-                id,
-                point = data.Item2
+                responseModel = new VotesAjaxResponseModel()
+                {
+                    Id = id,
+                };
+
+                return Json(responseModel, JsonRequestBehavior.AllowGet);
+            }
+
+            var model = new CommentVoteModel();
+
+            var (message, points) = await model.Upvote(id, User.Identity.Name);
+
+            responseModel = new VotesAjaxResponseModel()
+            {
+                Id = id,
+                Points = points,
+                Status = message
             };
-            return Json(returnData, JsonRequestBehavior.AllowGet);
+            return Json(responseModel, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public async Task<ActionResult> Downvote(int id)
         {
-            var model = new CommentVoteModel();
-            var data = await model.Downvote(id, User.Identity.Name);
-            dynamic returnData = new
+            VotesAjaxResponseModel responseModel;
+
+            if (!User.Identity.IsAuthenticated)
             {
-                id,
-                point = data.Item2
+                responseModel = new VotesAjaxResponseModel()
+                {
+                    Id = id,
+                };
+
+                return Json(responseModel, JsonRequestBehavior.AllowGet);
+            }
+
+            var model = new CommentVoteModel();
+            var (message, points) = await model.Downvote(id, User.Identity.Name);
+
+            responseModel = new VotesAjaxResponseModel()
+            {
+                Id = id,
+                Points = points,
+                Status = message
             };
-            return Json(returnData, JsonRequestBehavior.AllowGet);
+
+            return Json(responseModel, JsonRequestBehavior.AllowGet);
         }
     }
 }

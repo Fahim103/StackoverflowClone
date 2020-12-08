@@ -16,10 +16,11 @@ namespace StackOverflow.Web.Models
         private readonly IPostService _postService;
         private readonly ApplicationUserManager _userManager;
 
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Problem title is required")]
         public string Title { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Problem description is required")]
+        [StringLength(1000, ErrorMessage = "Description length must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.MultilineText)]
         public string Content { get; set; }
 

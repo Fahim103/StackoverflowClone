@@ -145,6 +145,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\CommentModelDTO.cs" />
+    <Compile Include="DTO\PostModelDTO.cs" />
     <Compile Include="Convention\TableNameConvention.cs" />
     <Compile Include="CoreModule.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
@@ -152,6 +154,7 @@
     <Compile Include="Entities\CommentPoint.cs" />
     <Compile Include="Entities\Post.cs" />
     <Compile Include="Entities\PostPoint.cs" />
+    <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Mappings\CommentMappings.cs" />
     <Compile Include="Mappings\CommentPointMappings.cs" />
     <Compile Include="Mappings\PostMappings.cs" />
@@ -170,7 +173,7 @@
     <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Seed\ApplicationUserRoleSeed.cs" />
     <Compile Include="Seed\ApplicationUserSeed.cs" />
-    <Compile Include="MembershipConstants.cs" />
+    <Compile Include="StringConstants.cs" />
     <Compile Include="Services\ApplicationSignInManager.cs" />
     <Compile Include="Services\ApplicationUserManager.cs" />
     <Compile Include="Services\CommentPointService.cs" />

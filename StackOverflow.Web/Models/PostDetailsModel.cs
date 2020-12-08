@@ -19,8 +19,9 @@ namespace StackOverflow.Web.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
-        public long Points { get; set; }
+        public long TotalVotes { get; set; }
         public bool HasAcceptedAnswer { get; set; }
+        public string AskedBy { get; set; }
         public IList<CommentDetailsModel> CommentDetails { get; set; }
 
         public PostDetailsModel()
@@ -40,15 +41,14 @@ namespace StackOverflow.Web.Models
 
         public void GetModelById(int id)
         {
-            _postService = new PostService();
-
             var post = _postService.GetById(id);
             Id = post.Id;
             Title = post.Title;
             Content = post.Content;
             CreatedAt = post.CreatedAt.ToLocalTime();
             HasAcceptedAnswer = post.HasAcceptedAnswer;
-            Points = _postPointService.GetVotes(post.Id).overall;
+            AskedBy = post.AskedBy;
+            TotalVotes = post.TotalVotes;
             CommentDetails = new List<CommentDetailsModel>();
 
             foreach (var item in post.Comments)
@@ -59,8 +59,8 @@ namespace StackOverflow.Web.Models
                     Content = item.Content,
                     IsAccepted = item.IsAccepted,
                     CreatedAt = item.CreatedAt,
-                    AnsweredBy = item.ApplicationUser.UserName,
-                    Points = _commentPointService.GetCount(item.Id)
+                    AnsweredBy = item.AnsweredBy,
+                    CommentPoints = item.CommentPoints
                 });
             }
         }

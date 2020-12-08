@@ -29,8 +29,7 @@ namespace StackOverflow.Web.Models
         public async Task AddComment(string username)
         {
             var user = await _userManager.FindByEmailAsync(username);
-            var t = HttpContext.Current.GetOwinContext();
-            var post = _postService.GetById(PostId);
+            var post = _postService.Get(PostId);
             var comment = new Comment()
             {
                 Content = Content,
