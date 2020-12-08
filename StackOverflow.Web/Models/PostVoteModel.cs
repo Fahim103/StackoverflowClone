@@ -34,7 +34,7 @@ namespace StackOverflow.Web.Models
         {
             var user = await _userManager.FindByNameAsync(username);
             var post = _postService.GetById(postId);
-            var postPoint = _postPointService.GetByUserId(user.Id);
+            var postPoint = _postPointService.GetByPostAndUserId(post.Id, user.Id);
             if (postPoint != null)
             {
                 if (!postPoint.IsUpvoted)
@@ -72,7 +72,7 @@ namespace StackOverflow.Web.Models
         {
             var user = await _userManager.FindByNameAsync(username);
             var post = _postService.GetById(postId);
-            var postPoint = _postPointService.GetByUserId(user.Id);
+            var postPoint = _postPointService.GetByPostAndUserId(post.Id, user.Id);
             if (postPoint != null)
             {
                 if (postPoint.IsUpvoted)

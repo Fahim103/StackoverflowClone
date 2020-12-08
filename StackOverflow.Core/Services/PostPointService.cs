@@ -25,9 +25,9 @@ namespace StackOverflow.Core.Services
             _postPointRepository.Create(postPoint);
         }
 
-        public PostPoint GetByUserId(string userId)
+        public PostPoint GetByPostAndUserId(int postId, string userId)
         {
-            return _postPointRepository.GetByUserId(userId);
+            return _postPointRepository.Get(x => x.Post.Id == postId && x.ApplicationUser.Id == userId).FirstOrDefault();
         }
 
         public int GetCount(Expression<Func<PostPoint, bool>> predicate)

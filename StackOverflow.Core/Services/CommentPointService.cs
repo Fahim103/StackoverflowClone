@@ -23,9 +23,9 @@ namespace StackOverflow.Core.Services
             _commentPointRepository.Create(commentPoint);
         }
 
-        public CommentPoint GetByUserId(string userId)
+        public CommentPoint GetByCommentAndUserId(int commentId,string userId)
         {
-            return _commentPointRepository.GetByUserId(userId);
+            return _commentPointRepository.Get(x => x.Comment.Id == commentId && x.ApplicationUser.Id == userId).FirstOrDefault();
         }
 
         public int GetCount(int commentId)

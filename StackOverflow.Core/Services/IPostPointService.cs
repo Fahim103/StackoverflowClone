@@ -12,7 +12,7 @@ namespace StackOverflow.Core.Services
     {
         void Update(PostPoint postPoint);
         void Create(PostPoint postPoint);
-        PostPoint GetByUserId(string userId);
+        PostPoint GetByPostAndUserId(int postId, string userId);
         int GetCount(Expression<Func<PostPoint, bool>> predicate);
         (long upvote, long downvote, long overall) GetVotes(int postId);
     }

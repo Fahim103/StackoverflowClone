@@ -34,7 +34,7 @@ namespace StackOverflow.Web.Models
         {
             var user = await _userManager.FindByNameAsync(username);
             var comment = _commentService.GetById(commentId);
-            var commentPoint = _commentPointService.GetByUserId(user.Id);
+            var commentPoint = _commentPointService.GetByCommentAndUserId(comment.Id, user.Id);
             if (commentPoint != null)
             {
                 if (!commentPoint.IsUpvoted)
@@ -72,7 +72,7 @@ namespace StackOverflow.Web.Models
         {
             var user = await _userManager.FindByNameAsync(username);
             var comment = _commentService.GetById(commentId);
-            var commentPoint = _commentPointService.GetByUserId(user.Id);
+            var commentPoint = _commentPointService.GetByCommentAndUserId(comment.Id, user.Id);
             if (commentPoint != null)
             {
                 if (commentPoint.IsUpvoted)

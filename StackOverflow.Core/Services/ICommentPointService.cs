@@ -12,7 +12,7 @@ namespace StackOverflow.Core.Services
         void Update(CommentPoint commentPoint);
         void Create(CommentPoint commentPoint);
         int GetCount(int commentId);
-        CommentPoint GetByUserId(string userId);
+        CommentPoint GetByCommentAndUserId(int commentId, string userId);
         (long upvote, long downvote, long overall) GetVotes(int postId);
     }
 }
