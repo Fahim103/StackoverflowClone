@@ -1,5 +1,8 @@
 ﻿using Autofac;
+using Microsoft.AspNet.Identity;
 using NHibernate;
+using NHibernate.AspNet.Identity;
+using StackOverflow.Core.Entities;
 using StackOverflow.Core.Repositories;
 using StackOverflow.Core.Services;
 using StackOverflow.Core.UnitOfWorks;
@@ -24,7 +27,11 @@ namespace StackOverflow.Core
             builder.RegisterType<PostPointRepository>().As<IPostPointRepository>().InstancePerLifetimeScope();
             builder.RegisterType<CommentPointService>().As<ICommentPointService>().InstancePerLifetimeScope();
             builder.RegisterType<PostPointService>().As<IPostPointService>().InstancePerLifetimeScope();
-            //builder.Register(s => NHibernateDbContext.GetSession()).As<ISession>().InstancePerDependency();
+
+
+            builder.Register(s => NHibernateDbContext.GetSession()).As<ISession>().InstancePerLifetimeScope();
+            builder.RegisterType<UserStore<ApplicationUser>>().As<IUserStore<ApplicationUser>>();
+            builder.RegisterType<UserManager<ApplicationUser>>();
 
             base.Load(builder);
         }

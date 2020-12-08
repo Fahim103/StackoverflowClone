@@ -1,9 +1,13 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Owin;
 using Serilog;
 using StackOverflow.Core;
+using StackOverflow.Core.Entities;
+using StackOverflow.Core.Seed;
+using StackOverflow.Core.Services;
 using System.Web.Hosting;
 using System.Web.Mvc;
 
@@ -43,6 +47,11 @@ namespace StackOverflow.Web
             AutofacContainer = container;
 
             ConfigureAuth(app);
+
+            // Seed Roles
+            new ApplicationUserRoleSeed().GenerateUserRoles();
+            // Seed Admin
+            new ApplicationUserSeed(AutofacContainer.Resolve<UserManager<ApplicationUser>>()).SeedUser();
         }
     }
 }

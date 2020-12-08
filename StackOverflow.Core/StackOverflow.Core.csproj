@@ -168,6 +168,7 @@
     <Compile Include="Repositories\PostPointRepository.cs" />
     <Compile Include="Repositories\PostRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="Seed\ApplicationUserRoleSeed.cs" />
     <Compile Include="Services\ApplicationSignInManager.cs" />
     <Compile Include="Services\ApplicationUserManager.cs" />
     <Compile Include="Services\CommentPointService.cs" />
