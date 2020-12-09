@@ -10,10 +10,6 @@ namespace StackOverflow.Web.Models
     public class PostDetailsModel
     {
         private IPostService _postService { get; set; }
-        private ICommentService _commentService { get; set; }
-
-        private readonly IPostPointService _postPointService;
-        private readonly ICommentPointService _commentPointService;
 
         public int Id { get; set; }
         public string Title { get; set; }
@@ -28,15 +24,11 @@ namespace StackOverflow.Web.Models
         public PostDetailsModel()
         {
             _postService = Startup.AutofacContainer.Resolve<IPostService>();
-            _commentService = Startup.AutofacContainer.Resolve<ICommentService>();
-            _postPointService = Startup.AutofacContainer.Resolve<IPostPointService>();
-            _commentPointService = Startup.AutofacContainer.Resolve<ICommentPointService>();
         }
 
-        public PostDetailsModel(IPostService postService, ICommentService commentService)
+        public PostDetailsModel(IPostService postService)
         {
             _postService = postService;
-            _commentService = commentService;
         }
 
 
