@@ -13,6 +13,8 @@ namespace StackOverflow.Core.Entities
         public virtual string Content { get; set; }
         public virtual DateTime CreatedAt { get; set; }
         public virtual bool HasAcceptedAnswer { get; set; }
+        public virtual bool IsDuplicate { get; set; }
+        public virtual bool IsDeleted { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual ICollection<PostPoint> PostPoints { get; set; }
         public virtual ICollection<Comment> Comments{ get; set; }

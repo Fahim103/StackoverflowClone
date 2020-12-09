@@ -17,6 +17,7 @@ namespace StackOverflow.Web.Models
         public DateTime CreatedAt { get; set; }
         public long TotalVotes { get; set; }
         public long TotalAnswers { get; set; }
+        public bool IsDuplicate { get; set; }
 
 
         public IList<PostModel> Posts { get; private set; }
@@ -45,7 +46,8 @@ namespace StackOverflow.Web.Models
                     Content = post.Content,
                     CreatedAt = post.CreatedAt.ToLocalTime(),
                     TotalVotes = post.TotalVotes,
-                    TotalAnswers = post.TotalAnswers
+                    TotalAnswers = post.TotalAnswers,
+                    IsDuplicate = post.IsDuplicate
                 });
             }
         }

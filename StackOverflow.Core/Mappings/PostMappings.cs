@@ -17,6 +17,8 @@ namespace StackOverflow.Core.Mappings
             Map(p => p.Content).Length(2000);
             Map(p => p.CreatedAt);
             Map(p => p.HasAcceptedAnswer);
+            Map(p => p.IsDuplicate);
+            Map(p => p.IsDeleted).Access.Property().Default("0");
             References(p => p.ApplicationUser);
             HasMany(p => p.PostPoints).Cascade.AllDeleteOrphan();
             HasMany(p => p.Comments).Cascade.AllDeleteOrphan();

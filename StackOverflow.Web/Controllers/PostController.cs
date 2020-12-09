@@ -1,4 +1,5 @@
-﻿using StackOverflow.Core.Exceptions;
+﻿using StackOverflow.Core;
+using StackOverflow.Core.Exceptions;
 using StackOverflow.Web.Models;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -49,7 +50,7 @@ namespace StackOverflow.Web.Controllers
 
                 return View(model);
             }
-            catch (EntityNotFoundException ex)
+            catch (EntityNotFoundException)
             {
                 return RedirectToAction("Index");
             }
@@ -124,6 +125,38 @@ namespace StackOverflow.Web.Controllers
             }
             
             return RedirectToAction("Details", "Post", new { id = model.PostId });
+        }
+
+        [Authorize(Roles = StringConstants.ADMIN_ROLE)]
+        [HttpGet]
+        public ActionResult ManagePosts()
+        {
+            var model = new PostModel();
+            model.LoadModelData();
+
+            return View(model.Posts);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = StringConstants.ADMIN_ROLE)]
+        public ActionResult MarkDuplicate(int postId)
+        {
+            var model = new PostManageModel();
+            model.MarkPostDuplicate(postId);
+
+            return RedirectToAction("ManagePosts");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = StringConstants.ADMIN_ROLE)]
+        public ActionResult Hide(int postId)
+        {
+            var model = new PostManageModel();
+            model.HidePost(postId);
+
+            return RedirectToAction("ManagePosts");
         }
     }
 }

@@ -31,7 +31,7 @@ namespace StackOverflow.Core.Services
 
         public void Delete(int id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void Dispose()
@@ -45,7 +45,7 @@ namespace StackOverflow.Core.Services
         public IList<PostModelDTO> GetAll()
         {
             _session.Clear();
-            var posts = _unitOfWork.PostRepository.Get(_session);
+            var posts = _unitOfWork.PostRepository.Get(_session, x => x.IsDeleted == false);
             var result = new List<PostModelDTO>();
             foreach(var post in posts)
             {
@@ -55,6 +55,7 @@ namespace StackOverflow.Core.Services
                     Title = post.Title,
                     Content = post.Content,
                     CreatedAt = post.CreatedAt.ToLocalTime(),
+                    IsDuplicate = post.IsDuplicate,
                     TotalVotes = _unitOfWork.PostPointRepository.GetVotes(_session, post.Id).overall,
                     TotalAnswers = _unitOfWork.CommentRepository.GetCount(_session, x => x.Post.Id == post.Id)
                 });
@@ -66,13 +67,17 @@ namespace StackOverflow.Core.Services
         public Post Get(int id)
         {
             _session.Clear();
-            return _unitOfWork.PostRepository.Get(_session, id);
+            return _unitOfWork.PostRepository.Get(_session, x => x.Id == id && x.IsDeleted == false).FirstOrDefault();
         }
 
         public PostModelDTO GetById(int id)
         {
-            _session.Clear();
-            var post = _unitOfWork.PostRepository.Get(_session, id);
+            //_session.Clear();
+            //var post = _unitOfWork.PostRepository.Get(_session, id);
+
+            var post = Get(id);
+
+
             if (post == null)
             {
                 throw new EntityNotFoundException("No post found", nameof(Post));
@@ -222,6 +227,46 @@ namespace StackOverflow.Core.Services
 
             _unitOfWork.Commit();
             _session.Clear();
+        }
+
+        public void MarkDuplicate(int postId)
+        {
+            if (postId == 0)
+                return;
+
+            _session.Clear();
+
+            var post = Get(postId);
+            if (post.IsDuplicate)
+            {
+                _session.Clear();
+                return;
+            }
+
+            _unitOfWork.BeginTransaction(_session);
+            post.IsDuplicate = true;
+            _unitOfWork.PostRepository.Update(_session, post);
+            _unitOfWork.Commit();
+        }
+
+        public void HidePost(int postId)
+        {
+            if (postId == 0)
+                return;
+
+            _session.Clear();
+
+            var post = Get(postId);
+            if (post.IsDeleted)
+            {
+                _session.Clear();
+                return;
+            }
+
+            _unitOfWork.BeginTransaction(_session);
+            post.IsDeleted = true;
+            _unitOfWork.PostRepository.Update(_session, post);
+            _unitOfWork.Commit();
         }
     }
 }

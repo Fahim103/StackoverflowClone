@@ -1,0 +1,85 @@
+﻿@model IEnumerable<StackOverflow.Web.Models.PostModel>
+
+@{
+    ViewBag.Title = "Index";
+    var count = Model.Count();
+}
+
+<div>
+    @foreach (var item in Model)
+    {
+        count--;
+        <div class="row">
+            <div class="col-md-1 text-center">
+                <div>
+                    <span>@item.TotalVotes</span>
+                    <br>
+                    <small>
+                        <span>votes</span>
+                    </small>
+                </div>
+                <div class="mt-2">
+                    <span>@item.TotalAnswers</span>
+                    <br>
+                    <small>
+                        <span>answers</span>
+                    </small>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <h5>
+                    @Html.ActionLink(@item.Title, "Details", new { id = item.Id })
+                    @if (item.IsDuplicate)
+                    {
+                        <span class="ml-2 btn-warning btn-sm">
+                            Duplicate
+                        </span>
+                    }
+                </h5>
+                <p>
+                    @if (item.Content.Length > 100)
+                    {
+                        @item.Content.Substring(0, 100)
+                    }
+                    else
+                    {
+                        @item.Content
+                    }
+                </p>
+            </div>
+            <div class="col-md-3 text-right">
+                <div class="form-inline">
+                    @using (Html.BeginForm("Hide", "Post", FormMethod.Post, htmlAttributes: new { @class = "ml-auto mr-2 form-inline" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" value=@item.Id name="postId" />
+                        <button class="btn btn-danger btn-xs">Hide</button>
+                    }
+                    @if (!item.IsDuplicate)
+                    {
+                        using (Html.BeginForm("MarkDuplicate", "Post", FormMethod.Post, htmlAttributes: new { @class = "form-inline" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" value=@item.Id name="postId" />
+                            <button class="btn btn-warning btn-xs">Mark Duplicate</button>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="col-md-12 text-right">
+                <div class="px-5">
+                    <small>
+                        <span>Asked at @item.CreatedAt.ToLocalTime()</span>
+                        <br>
+                        <span>By Fahim</span>
+                    </small>
+                </div>
+            </div>
+        </div>
+        if (count != 0)
+        {
+            <hr />
+        }
+    }
+</div>
+

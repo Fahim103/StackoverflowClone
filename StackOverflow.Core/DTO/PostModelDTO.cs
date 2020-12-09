@@ -16,7 +16,7 @@ namespace StackOverflow.Core.DTO
         public long TotalVotes { get; set; }
         public long TotalAnswers { get; set; }
         public bool HasAcceptedAnswer { get; set; }
-
+        public virtual bool IsDuplicate { get; set; }
         public IList<CommentModelDTO> Comments { get; set; }
 
     }

@@ -15,5 +15,7 @@ namespace StackOverflow.Core.Services
         (string message, long points) UpvotePost(ApplicationUser user, int postId);
         (string message, long points) DownvotePost(ApplicationUser user, int postId);
         void AcceptAnswer(int postId, int commentId);
+        void MarkDuplicate(int postId);
+        void HidePost(int postId);
     }
 }
