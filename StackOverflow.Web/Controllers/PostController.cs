@@ -132,7 +132,7 @@ namespace StackOverflow.Web.Controllers
         public ActionResult ManagePosts()
         {
             var model = new PostModel();
-            model.LoadModelData();
+            model.LoadModelData(true);
 
             return View(model.Posts);
         }
@@ -155,6 +155,28 @@ namespace StackOverflow.Web.Controllers
         {
             var model = new PostManageModel();
             model.HidePost(postId);
+
+            return RedirectToAction("ManagePosts");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = StringConstants.ADMIN_ROLE)]
+        public ActionResult RemoveMarkDuplicate(int postId)
+        {
+            var model = new PostManageModel();
+            model.RemoveMarkDuplicate(postId);
+
+            return RedirectToAction("ManagePosts");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = StringConstants.ADMIN_ROLE)]
+        public ActionResult Show(int postId)
+        {
+            var model = new PostManageModel();
+            model.ShowPost(postId);
 
             return RedirectToAction("ManagePosts");
         }

@@ -18,6 +18,7 @@ namespace StackOverflow.Web.Models
         public long TotalVotes { get; set; }
         public long TotalAnswers { get; set; }
         public bool IsDuplicate { get; set; }
+        public bool IsDeleted { get; set; }
 
 
         public IList<PostModel> Posts { get; private set; }
@@ -33,9 +34,9 @@ namespace StackOverflow.Web.Models
             _postService = postService;
         }
         
-        public void LoadModelData()
+        public void LoadModelData(bool includeDeleted = false)
         {
-            var posts = _postService.GetAll();
+            var posts = _postService.GetAll(includeDeleted);
             Posts = new List<PostModel>();
             foreach(var post in posts)
             {
@@ -47,7 +48,8 @@ namespace StackOverflow.Web.Models
                     CreatedAt = post.CreatedAt.ToLocalTime(),
                     TotalVotes = post.TotalVotes,
                     TotalAnswers = post.TotalAnswers,
-                    IsDuplicate = post.IsDuplicate
+                    IsDuplicate = post.IsDuplicate,
+                    IsDeleted = post.IsDeleted
                 });
             }
         }

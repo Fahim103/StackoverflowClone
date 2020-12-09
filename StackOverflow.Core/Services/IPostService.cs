@@ -6,9 +6,9 @@ namespace StackOverflow.Core.Services
 {
     public interface IPostService
     {
-        IList<PostModelDTO> GetAll();
+        IList<PostModelDTO> GetAll(bool includeDeleted = false);
         PostModelDTO GetById(int id);
-        Post Get(int id);
+        Post Get(int id, bool includeDeleted = false);
         void Create(Post post);
         void Update(Post post);
         void Delete(int id);
@@ -17,5 +17,7 @@ namespace StackOverflow.Core.Services
         void AcceptAnswer(int postId, int commentId);
         void MarkDuplicate(int postId);
         void HidePost(int postId);
+        void RemoveMarkDuplicate(int postId);
+        void ShowPost(int postId);
     }
 }

@@ -42,10 +42,19 @@ namespace StackOverflow.Core.Services
             }
         }
 
-        public IList<PostModelDTO> GetAll()
+        public IList<PostModelDTO> GetAll(bool includeDeleted = false)
         {
             _session.Clear();
-            var posts = _unitOfWork.PostRepository.Get(_session, x => x.IsDeleted == false);
+            IList<Post> posts;
+
+            if (includeDeleted)
+            {
+                posts = _unitOfWork.PostRepository.Get(_session);
+            }
+            else
+            {
+                posts = _unitOfWork.PostRepository.Get(_session, x => x.IsDeleted == false);
+            }
             var result = new List<PostModelDTO>();
             foreach(var post in posts)
             {
@@ -56,6 +65,7 @@ namespace StackOverflow.Core.Services
                     Content = post.Content,
                     CreatedAt = post.CreatedAt.ToLocalTime(),
                     IsDuplicate = post.IsDuplicate,
+                    IsDeleted = post.IsDeleted,
                     TotalVotes = _unitOfWork.PostPointRepository.GetVotes(_session, post.Id).overall,
                     TotalAnswers = _unitOfWork.CommentRepository.GetCount(_session, x => x.Post.Id == post.Id)
                 });
@@ -64,10 +74,17 @@ namespace StackOverflow.Core.Services
             return result;
         }
 
-        public Post Get(int id)
+        public Post Get(int id, bool includeDeleted = false)
         {
             _session.Clear();
-            return _unitOfWork.PostRepository.Get(_session, x => x.Id == id && x.IsDeleted == false).FirstOrDefault();
+            if(includeDeleted)
+            {
+                return _unitOfWork.PostRepository.Get(_session, id);
+            }
+            else
+            {
+                return _unitOfWork.PostRepository.Get(_session, x => x.Id == id && x.IsDeleted == false).FirstOrDefault();
+            }
         }
 
         public PostModelDTO GetById(int id)
@@ -236,8 +253,8 @@ namespace StackOverflow.Core.Services
 
             _session.Clear();
 
-            var post = Get(postId);
-            if (post.IsDuplicate)
+            var post = Get(postId, true);
+            if (post == null || post.IsDuplicate)
             {
                 _session.Clear();
                 return;
@@ -257,7 +274,7 @@ namespace StackOverflow.Core.Services
             _session.Clear();
 
             var post = Get(postId);
-            if (post.IsDeleted)
+            if (post == null || post.IsDeleted)
             {
                 _session.Clear();
                 return;
@@ -265,6 +282,46 @@ namespace StackOverflow.Core.Services
 
             _unitOfWork.BeginTransaction(_session);
             post.IsDeleted = true;
+            _unitOfWork.PostRepository.Update(_session, post);
+            _unitOfWork.Commit();
+        }
+
+        public void RemoveMarkDuplicate(int postId)
+        {
+            if (postId == 0)
+                return;
+
+            _session.Clear();
+
+            var post = Get(postId, true);
+            if (post == null || !post.IsDuplicate)
+            {
+                _session.Clear();
+                return;
+            }
+
+            _unitOfWork.BeginTransaction(_session);
+            post.IsDuplicate = false;
+            _unitOfWork.PostRepository.Update(_session, post);
+            _unitOfWork.Commit();
+        }
+
+        public void ShowPost(int postId)
+        {
+            if (postId == 0)
+                return;
+
+            _session.Clear();
+
+            var post = Get(postId, true);
+            if (post == null || !post.IsDeleted)
+            {
+                _session.Clear();
+                return;
+            }
+
+            _unitOfWork.BeginTransaction(_session);
+            post.IsDeleted = false;
             _unitOfWork.PostRepository.Update(_session, post);
             _unitOfWork.Commit();
         }

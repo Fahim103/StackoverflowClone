@@ -32,5 +32,21 @@ namespace StackOverflow.Web.Models
 
             _postService.HidePost(postId);
         }
+
+        public void ShowPost(int postId)
+        {
+            if (postId == 0)
+                return;
+
+            _postService.ShowPost(postId);
+        }
+
+        public void RemoveMarkDuplicate(int postId)
+        {
+            if (postId == 0)
+                return;
+
+            _postService.RemoveMarkDuplicate(postId);
+        }
     }
 }
