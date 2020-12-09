@@ -19,6 +19,7 @@ namespace StackOverflow.Web.Models
         public long TotalAnswers { get; set; }
         public bool IsDuplicate { get; set; }
         public bool IsDeleted { get; set; }
+        public string AskedBy { get; set; }
 
 
         public IList<PostModel> Posts { get; private set; }
@@ -49,7 +50,8 @@ namespace StackOverflow.Web.Models
                     TotalVotes = post.TotalVotes,
                     TotalAnswers = post.TotalAnswers,
                     IsDuplicate = post.IsDuplicate,
-                    IsDeleted = post.IsDeleted
+                    IsDeleted = post.IsDeleted,
+                    AskedBy = post.AskedBy
                 });
             }
         }

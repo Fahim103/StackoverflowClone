@@ -8,52 +8,80 @@
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
     <script type="text/javascript">
 
+        let postVoteBeforeAjax;
+        let commentVoteBeforeAjax;
+        let commentIdOfAjax;
+
+        function UpvoteBegin() {
+            postVoteBeforeAjax = $('#Points').text();
+            @if (!User.Identity.IsAuthenticated)
+            {
+                @:alert("Please login to vote");
+                @:return false;
+            }
+        }
+
         function UpvotePostSuccess(data) {
-            let id = data.Id.toString();
-            let points = data.Points;
-            let status = data.Status;
-            if (status == "SUCCESS") {
+            if (data) {
+                let id = data.Id.toString();
+                let points = data.Points;
+                let status = data.Status;
                 $('#Points').text(points);
             }
         }
+
         function UpvotePostFailure(data) {
-            @if(!User.Identity.IsAuthenticated)
+            @if (!User.Identity.IsAuthenticated)
             {
                 @:alert('Please login to vote');
+                @:$('#Points').text(postVoteBeforeAjax);
             }
             else
             {
                 @:alert('Something went wrong');
+                @:$('#Points').text(postVoteBeforeAjax);
             }
         }
 
         function DownvotePostSuccess(data) {
-            let id = data.Id.toString();
-            let points = data.Points;
-            let status = data.Status;
-            console.log(status);
-            if (status == "SUCCESS") {
+            if (data) {
+                let id = data.Id.toString();
+                let points = data.Points;
+                let status = data.Status;
                 $('#Points').text(points);
             }
-            $('#Points').text(points);
         }
 
         function DownvotePostFailure(data) {
             @if(!User.Identity.IsAuthenticated)
             {
                 @:alert('Please login to vote');
+                @:$('#Points').text(postVoteBeforeAjax);
             }
             else
             {
                 @:alert('Something went wrong');
+                @:$('#Points').text(postVoteBeforeAjax);
+            }
+        }
+
+
+        function OnCommentUpvoteBegin(data) {
+            data = data.split(',');
+            commentIdOfAjax = data[0];
+            commentVoteBeforeAjax = data[1];
+            @if (!User.Identity.IsAuthenticated)
+            {
+                @:alert("Please login to vote");
+                @:return false;
             }
         }
 
         function UpvoteCommentSuccess(data) {
-            let id = data.Id.toString();
-            let points = data.Points;
-            let status = data.Status;
-            if (status == "SUCCESS") {
+            if (data) {
+                let id = data.Id.toString();
+                let points = data.Points;
+                let status = data.Status;
                 $('#' + id).text(points);
             }
         }
@@ -62,18 +90,20 @@
             @if(!User.Identity.IsAuthenticated)
             {
                 @:alert('Please login to vote');
+                @:$('#' + commentIdOfAjax).text(commentVoteBeforeAjax);
             }
             else
             {
                 @:alert('Something went wrong');
+                @:$('#' + commentIdOfAjax).text(commentVoteBeforeAjax);
             }
         }
 
         function DownvoteCommentSuccess(data) {
-            let id = data.Id.toString();
-            let points = data.Points;
-            let status = data.Status;
-            if (status == "SUCCESS") {
+            if (data) {
+                let id = data.Id.toString();
+                let points = data.Points;
+                let status = data.Status;
                 $('#' + id).text(points);
             }
         }
@@ -82,10 +112,12 @@
             @if(!User.Identity.IsAuthenticated)
             {
                 @:alert('Please login to vote');
+                @:$('#' + commentIdOfAjax).text(commentVoteBeforeAjax);
             }
             else
             {
                 @:alert('Something went wrong');
+                @:$('#' + commentIdOfAjax).text(commentVoteBeforeAjax);
             }
         }
 
@@ -110,7 +142,19 @@
 <div class="mt-2">
     <div class="row">
         <div class="col-md-10">
-            <h4>@Model.Title</h4>
+            <h4>
+                @Model.Title
+                @if (Model.IsDuplicate)
+                {
+                    <span class="ml-2 btn-warning btn-sm rounded-pill">
+                        Duplicate
+                    </span>
+                }
+            </h4>
+            <small>
+                Asked By @Model.AskedBy
+            </small>
+            <br />
             <small>@Model.CreatedAt</small>
         </div>
     </div>
@@ -118,7 +162,7 @@
     <div class="row">
         <div class="col-md-1 text-center">
             <div>
-                @using (Ajax.BeginForm("Upvote", "Post", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "Points", OnSuccess = "UpvotePostSuccess", OnFailure = "UpvotePostFailure" }))
+                @using (Ajax.BeginForm("Upvote", "Post", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "Points", OnBegin="return UpvoteBegin()",  OnSuccess = "UpvotePostSuccess", OnFailure = "UpvotePostFailure" }))
                 {
                     <input type="hidden" value=@Model.Id name="id" />
                     <button type="submit" style="border: none; background-color: white;">
@@ -128,7 +172,7 @@
                     </button>
                 }
                 <span id="Points" name="TotalVotes">@Model.TotalVotes</span>
-                @using (Ajax.BeginForm("Downvote", "Post", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "Points", OnSuccess = "DownvotePostSuccess", OnFailure = "DownvotePostFailure" }))
+                @using (Ajax.BeginForm("Downvote", "Post", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = "Points", OnBegin = "return UpvoteBegin()", OnSuccess = "DownvotePostSuccess", OnFailure = "DownvotePostFailure" }))
                 {
                     <input type="hidden" value="@Model.Id" name="id" />
                     <button type="submit" style="border: none; background-color: white;">
@@ -158,7 +202,7 @@
         <div class="row">
             <div class="col-md-1 text-center">
                 <div>
-                    @using (Ajax.BeginForm("Upvote", "Comment", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = item.Id.ToString(), OnSuccess = "UpvoteCommentSuccess", OnFailure = "UpvoteCommentFailure" }))
+                    @using (Ajax.BeginForm("Upvote", "Comment", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = item.Id.ToString(), OnSuccess = "UpvoteCommentSuccess", OnFailure = "UpvoteCommentFailure", OnBegin = "return OnCommentUpvoteBegin('" + item.Id + "," + item.CommentPoints + "')" }))
                     {
                         <input type="hidden" value=@item.Id name="id" />
                         <button style="border: none; background-color: white;">
@@ -168,7 +212,7 @@
                         </button>
                     }
                     <span id="@item.Id" name="CommentPoints">@item.CommentPoints</span>
-                    @using (Ajax.BeginForm("Downvote", "Comment", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = item.Id.ToString(), OnSuccess = "DownvoteCommentSuccess", OnFailure = "DownvoteCommentFailure" }))
+                    @using (Ajax.BeginForm("Downvote", "Comment", new AjaxOptions { HttpMethod = "POST", UpdateTargetId = item.Id.ToString(), OnSuccess = "DownvoteCommentSuccess", OnFailure = "DownvoteCommentFailure", OnBegin = "return OnCommentUpvoteBegin('" + item.Id + "," + item.CommentPoints + "')" }))
                     {
                         <input type="hidden" value=@item.Id name="id" />
                         <button type="submit" style="border: none; background-color: white;">

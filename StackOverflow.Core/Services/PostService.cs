@@ -66,6 +66,7 @@ namespace StackOverflow.Core.Services
                     CreatedAt = post.CreatedAt.ToLocalTime(),
                     IsDuplicate = post.IsDuplicate,
                     IsDeleted = post.IsDeleted,
+                    AskedBy = post.ApplicationUser.UserName,
                     TotalVotes = _unitOfWork.PostPointRepository.GetVotes(_session, post.Id).overall,
                     TotalAnswers = _unitOfWork.CommentRepository.GetCount(_session, x => x.Post.Id == post.Id)
                 });
@@ -106,6 +107,7 @@ namespace StackOverflow.Core.Services
                 Content = post.Content,
                 AskedBy = post.ApplicationUser.UserName,
                 CreatedAt = post.CreatedAt,
+                IsDuplicate = post.IsDuplicate,
                 TotalVotes = _unitOfWork.PostPointRepository.GetVotes(_session, post.Id).overall,
                 TotalAnswers = _unitOfWork.CommentRepository.GetCount(_session, x => x.Post.Id == post.Id),
                 HasAcceptedAnswer = post.HasAcceptedAnswer,

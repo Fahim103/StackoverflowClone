@@ -21,6 +21,7 @@ namespace StackOverflow.Web.Models
         public DateTime CreatedAt { get; set; }
         public long TotalVotes { get; set; }
         public bool HasAcceptedAnswer { get; set; }
+        public bool IsDuplicate { get; set; }
         public string AskedBy { get; set; }
         public IList<CommentDetailsModel> CommentDetails { get; set; }
 
@@ -49,6 +50,7 @@ namespace StackOverflow.Web.Models
             HasAcceptedAnswer = post.HasAcceptedAnswer;
             AskedBy = post.AskedBy;
             TotalVotes = post.TotalVotes;
+            IsDuplicate = post.IsDuplicate;
             CommentDetails = new List<CommentDetailsModel>();
 
             foreach (var item in post.Comments)
