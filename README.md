@@ -1,6 +1,6 @@
 # StackoverflowClone
 
-A minimalistic demo app where the following can be done
+A minimalistic demo app with nHibernet ORM where the following can be done
 - user can register and login
 - user can ask question
 - user can answer to questions
